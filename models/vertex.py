@@ -1,4 +1,4 @@
-from point import Point
+from models import Point
 
 
 class Vertex:

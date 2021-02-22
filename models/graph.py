@@ -1,5 +1,4 @@
-from point import Point
-from vertex import Vertex
+from models import Point, Vertex
 
 
 class Graph:
