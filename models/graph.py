@@ -1,10 +1,10 @@
-from models import Vertex
+from models import Vertex, Edge
 
 
 class Graph:
     def __init__(self):
         self.vertices, self.edges = set(), set()
-    
+
     def __str__(self):
         return str(self.edges)
 
@@ -16,4 +16,4 @@ class Graph:
 
     def add_edge(self, v1: Vertex, v2: Vertex):
         if (v1 in self.vertices and v2 in self.vertices):
-            self.edges.add((v1, v2))
+            self.edges.add(Edge(v1, v2))
