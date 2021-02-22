@@ -3,12 +3,13 @@ from models import Point, Vertex, Graph
 
 
 class TestModels(unittest.TestCase):
+    '''Test class for basic entities'''
     def test_point_creation(self):
         p1 = Point(1, 2)
         p2 = Point(1, 2, 3.6)
-        self.assertEquals(p1.coords, (1, 2))
-        self.assertEquals(p2.coords, (1, 2, 3.6))
-        
+        self.assertEqual(p1.coords, (1, 2))
+        self.assertEqual(p2.coords, (1, 2, 3.6))
+
     def test_graph_vertex_add(self):
         g = Graph()
         v1 = Vertex(Point(1, 2))
@@ -20,4 +21,4 @@ class TestModels(unittest.TestCase):
         g.add_edge(v1, v2)
         g.add_edge(v2, v1)
 
-        self.assertEquals(len(g.edges), 1)
+        self.assertEqual(len(g.edges), 1)
