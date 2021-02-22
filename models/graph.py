@@ -3,15 +3,18 @@ from models import Point, Vertex
 
 class Graph:
     def __init__(self):
-        self.vertices = []
+        self.vertices = set()
         self.edges = []
     
     def __str__(self):
         return str(self.edges)
 
-    def add_vertex(self, v: Vertex):
-        self.vertices.append(v)
+    def get_sorted_vertices(self):
+        return list(sorted(map(lambda x: x.point.tuple, self.vertices)))
 
-    def add_edge(self, v1: Vertex, v2: Vertex, weight = 0):
+    def add_vertex(self, v: Vertex):
+        self.vertices.add(v)
+
+    def add_edge(self, v1: Vertex, v2: Vertex):
         if (v1 in self.vertices and v2 in self.vertices):
-            self.edges.append((v1.id, v2.id, weight))
+            self.edges.append((v1, v2))
