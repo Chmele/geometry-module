@@ -1,3 +1,6 @@
+from models import Node
+
+
 class BinTree:
     def __init__(self, root: Node):
         self.root = root
@@ -12,10 +15,3 @@ class BinTree:
             self.print_tree(root.left)
         if root.right:
             self.print_tree(root.right)
-
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.left = None
-        self.right = None
-
