@@ -1,4 +1,5 @@
 from models import Graph, Point
+import functools as f
 
 
 def stripe(g: Graph, dot: Point):
@@ -13,8 +14,20 @@ def stripe(g: Graph, dot: Point):
     yield table
     stripe = find_stripe(stripes, dot)
     yield stripe
-    edges_to_check = table[stripe]
+    edges_to_check = sorted_edges_in_stripe(table[stripe], stripe)
     yield check_edges(edges_to_check, dot)
+
+
+def edge_value_in_y(edge, y):
+    x1, y1 = edge.v1.point.coords
+    x2, y2 = edge.v2.point.coords
+
+    return (x2-x1) * (y-y1) / (y2-y1) + x1
+
+
+def sorted_edges_in_stripe(edges, stripe):
+    stripe_median = sum(stripe) / 2
+    return sorted(edges, key=f.partial(edge_value_in_y, y=stripe_median))
 
 
 def edge_in_stripe(self, stripe):

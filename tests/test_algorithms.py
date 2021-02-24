@@ -39,4 +39,4 @@ class TestAlgorithms(unittest.TestCase):
 
         ans = list(s.stripe(g, dot))
         # print(str(ans[1][(5.0, 7.0)][4]))
-        print(str(ans[3][0]))
+        print(str(ans[3][1]))
