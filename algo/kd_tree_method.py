@@ -1,4 +1,4 @@
-from models import Node
+from models import Node, BinTree
 
 def kd_tree(points):
     ordered = sorted(points)
@@ -9,19 +9,18 @@ def kd_tree(points):
     # TODO: bin search in this tree
 
 
-
 def make_tree(list, node: Node, vertical=True):
     med = len(list) // 2
     if med == 0:
         return
 
     if vertical:
-        list_l = sorted(list[:med], key=lambda p: p.y)
-        list_r = sorted(list[-med:], key=lambda p: p.y)
+        sort_key = lambda p: p.y
     else:
-        list_l = sorted(list[:med], key=lambda p: p.x)
-        list_r = sorted(list[-med:], key=lambda p: p.x)
+        sort_key = lambda p: p.x
 
+    list_l = sorted(list[:med], key=sort_key)
+    list_r = sorted(list[-med:], key=sort_key)
     left = list_l[len(list_l) // 2]
     right = list_r[len(list_r) // 2]
     
@@ -31,6 +30,3 @@ def make_tree(list, node: Node, vertical=True):
 
     make_tree(list_l, node.left, not vertical)
     make_tree(list_r, node.right, not vertical)
-
-
-
