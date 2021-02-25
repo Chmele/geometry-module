@@ -1,8 +1,7 @@
-from geometry.module.algo.kd_tree_method import kd_tree
+from algo.kd_tree_method import kd_tree
 import unittest
 from models import Point, Vertex, Graph
 from algo import stripe_method as s
-from algo import kd_tree_method as kd
 
 
 class TestAlgorithms(unittest.TestCase):
@@ -61,4 +60,7 @@ class TestAlgorithms(unittest.TestCase):
         ry = [0, 8]
         
         ans = kd_tree(pts, rx, ry)
-        print(*ans)
+        print(*next(ans))
+        tree = next(ans)
+        tree.print_tree(tree.root)
+        print(*next(ans))

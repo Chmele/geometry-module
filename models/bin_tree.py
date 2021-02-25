@@ -12,9 +12,6 @@ class BinTree:
         if med == 0:
             return
 
-        print(list)
-        print(node.data)
-
         if vertical:
             sort_key = lambda p: p.y
         else:
