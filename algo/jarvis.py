@@ -3,7 +3,7 @@ from models import Point
 
 def jarvis(points):
     ind = points.index(min(points, key=lambda p: p.x))
-    lm, ans, length = ind, points[ind], len(points)
+    lm, ans, length = ind, [points[ind]], len(points)
 
     while True:
         next = (lm + 1) % length
@@ -16,7 +16,7 @@ def jarvis(points):
             break
         ans.append(points[next])
     
-    return ans 
+    return ans
 
 
 def direction_correct(points, i1, i2, i3):
