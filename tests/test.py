@@ -1,0 +1,5 @@
+d = dict()
+d.update([(1, 2), (2, 3)])
+print(d)
+z = zip((1,2))
+print(list(z))
