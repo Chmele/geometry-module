@@ -1,3 +1,6 @@
+import math
+from operator import add, sub
+
 class Point:
 
     def __init__(self, *args):
@@ -22,5 +25,18 @@ class Point:
     def __str__(self):
         return "(%s, %s)" % (self.x, self.y)
 
+    def __eq__(self, other):
+        return self.coords == other.coords
+
     def __lt__(self, other):
         return self.coords < other.coords
+
+    def __add__(self, other):
+        return Point(*list(map(add, self.coords, other.coords)))
+
+    def __sub__(self, other):
+        return Point(*list(map(sub, self.coords, other.coords)))
+
+    def dist_to(self, other):
+        s = sum([(a - b) ** 2 for a, b in zip(self.coords, other.coords)])
+        return math.sqrt(s)
