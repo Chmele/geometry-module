@@ -1,3 +1,6 @@
+from geometry.module.models.point import Point
+from geometry.module.models.bin_tree_node import Node
+from geometry.module.models.bin_tree import BinTree
 from algo.kd_tree_method import kd_tree
 import unittest
 from models import Point, Vertex, Graph
@@ -58,9 +61,29 @@ class TestAlgorithms(unittest.TestCase):
         ]
         rx = [3, 14]
         ry = [0, 8]
+        tree = BinTree(Node(Point(8, 13)), [], [])
+        tree.root.left = Node(Point(3, 6))
+        tree.root.left.left = Node(Point(6, 1))
+        tree.root.left.left.left = Node(Point(2, 3))
+        tree.root.left.right = Node(Point(5, 3))
+        tree.root.left.right.left = Node(Point(0, 9))
+        
+        tree.root.right = Node(Point(15, 5))
+        tree.root.right.left = Node(Point(12, 4))
+        tree.root.right.left.left = Node(Point(10, 2))
+        tree.root.right.right = Node(Point(17, 10))
+        tree.root.right.right.left = Node(Point(14, 11))
+
+        r_pts = [
+            Point(3, 6),
+            Point(5, 8),
+            Point(6, 1),
+            Point(10, 2),
+            Point(12, 4),
+        ]
         
         ans = kd_tree(pts, rx, ry)
-        print(*next(ans))
-        tree = next(ans)
-        tree.print_tree(tree.root)
-        print(*next(ans))
+
+        self.assertEqual(sorted(pts), next(ans))
+        self.assertEqual(tree, next(ans))
+        self.assertEqual(r_pts, sorted(next(ans)))

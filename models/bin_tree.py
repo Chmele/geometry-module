@@ -51,6 +51,9 @@ class BinTree:
             self.y_range[0] <= dot.y and dot.y <= self.y_range[1]
         )
 
+    def __eq__(self, other):
+        return self.root == other.root
+
     def print_tree(self, root):
         print('data = ' + str(root.data))
         print('left = ' + str(root.left.data)) if root.left else print('left = None')
