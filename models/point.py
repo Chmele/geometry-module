@@ -22,5 +22,8 @@ class Point:
     def __str__(self):
         return "(%s, %s)" % (self.x, self.y)
 
+    def __eq__(self, other):
+        return self.coords == other.coords
+
     def __lt__(self, other):
         return self.coords < other.coords

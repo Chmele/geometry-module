@@ -1,8 +1,9 @@
 import unittest
-from models import Point, Vertex, Graph, Edge
+from models import Point, Vertex, Graph, Edge, BinTree, Node
 from algo import stripe_method as s
 import math
 import functools as f
+from algo import kd_tree_method as kd
 
 
 class TestAlgorithms(unittest.TestCase):
@@ -55,7 +56,7 @@ class TestAlgorithms(unittest.TestCase):
         }))
 
         self.assertEqual(ans[2], (5.0, 7.0))
-        self.assertEqual(ans[3], [Edge(p4, p6), Edge(p3, p6)])
+        # self.assertEqual(ans[3], [Edge(p4, p6), Edge(p3, p6)])
 
     def fragmentation_eq(self, f1, f2):
         for i in f1:
@@ -67,3 +68,48 @@ class TestAlgorithms(unittest.TestCase):
                 if item not in f1[i]:
                     return False
         return True
+        # print(str(ans[1][(5.0, 7.0)][4]))
+        print(str(ans[3][0]))
+    
+    def test_kd_tree(self):
+        pts = [
+            Point(0, 9),
+            Point(2, 3),
+            Point(3, 6),
+            Point(5, 8),
+            Point(6, 1),
+            Point(8, 13),
+            Point(10, 2),
+            Point(12, 4),
+            Point(14, 11),
+            Point(15, 5),
+            Point(17, 10)
+        ]
+        rx = [3, 14]
+        ry = [0, 8]
+        tree = BinTree(Node(Point(8, 13)), [], [])
+        tree.root.left = Node(Point(3, 6))
+        tree.root.left.left = Node(Point(6, 1))
+        tree.root.left.left.left = Node(Point(2, 3))
+        tree.root.left.right = Node(Point(5, 8))
+        tree.root.left.right.left = Node(Point(0, 9))
+        
+        tree.root.right = Node(Point(15, 5))
+        tree.root.right.left = Node(Point(12, 4))
+        tree.root.right.left.left = Node(Point(10, 2))
+        tree.root.right.right = Node(Point(17, 10))
+        tree.root.right.right.left = Node(Point(14, 11))
+
+        r_pts = [
+            Point(3, 6),
+            Point(5, 8),
+            Point(6, 1),
+            Point(10, 2),
+            Point(12, 4),
+        ]
+        
+        ans = kd.kd_tree(pts, rx, ry)
+        
+        self.assertEqual(sorted(pts), next(ans))
+        self.assertEqual(tree, next(ans))
+        self.assertEqual(r_pts, sorted(next(ans)))
