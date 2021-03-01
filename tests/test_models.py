@@ -1,5 +1,7 @@
 import unittest
-from models import Point, Vertex, Graph
+from geometry.module.models.point import Point
+from geometry.module.models.vertex import Vertex
+from geometry.module.models.graph import Graph
 
 
 class TestModels(unittest.TestCase):
