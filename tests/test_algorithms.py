@@ -1,4 +1,4 @@
-from geometry.module.algo.jarvis import jarvis
+from algo.jarvis import jarvis
 import unittest
 from models import Point, Vertex, Graph
 from algo import stripe_method as s
