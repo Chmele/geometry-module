@@ -1,7 +1,9 @@
 from models import Graph, Point
+import functools as f
 
 
 def stripe(g: Graph, dot: Point):
+    '''Stripe method for dot localization'''
     separators = sorted(set(map(lambda x: x[1], g.vertices)))
     separators = [float('-inf')] + separators + [float('inf')]
     stripes = []
@@ -12,11 +14,24 @@ def stripe(g: Graph, dot: Point):
     yield table
     stripe = find_stripe(stripes, dot)
     yield stripe
-    edges_to_check = table[stripe]
+    edges_to_check = sorted_edges_in_stripe(table[stripe], stripe)
     yield check_edges(edges_to_check, dot)
 
 
+def edge_value_in_y(edge, y):
+    x1, y1 = edge.v1.point.coords
+    x2, y2 = edge.v2.point.coords
+
+    return (x2-x1) * (y-y1) / (y2-y1) + x1
+
+
+def sorted_edges_in_stripe(edges, stripe):
+    stripe_median = sum(stripe) / 2
+    return sorted(edges, key=f.partial(edge_value_in_y, y=stripe_median))
+
+
 def edge_in_stripe(self, stripe):
+    '''True if edge y projection overlaps stripe y region'''
     return (
         self.v1.point.y <= stripe[0] and self.v2.point.y >= stripe[1] or
         self.v2.point.y <= stripe[0] and self.v1.point.y >= stripe[1]
@@ -24,6 +39,12 @@ def edge_in_stripe(self, stripe):
 
 
 def position_dot_edge(dot, edge):
+    '''
+        Vector magic...
+        * / -> positive(dot in left)
+        / * -> negative(dor in right)
+        * is on / -> 0
+    '''
     x1, y1 = edge.v1.point.coords
     x2, y2 = edge.v2.point.coords
     x3, y3 = dot.coords
@@ -32,6 +53,7 @@ def position_dot_edge(dot, edge):
 
 
 def first_stage(stripes, g: Graph):
+    '''Returns list of tuples (lower, upper) bounds for each stripes'''
     ans = {}
     for stripe in stripes:
         ans.update(
@@ -42,14 +64,17 @@ def first_stage(stripes, g: Graph):
 
 
 def dot_in_stripe(dot, stripe):
+    '''True if dot.y is in horizontal stripe'''
     return stripe[0] < dot.y <= stripe[1]
 
 
 def find_stripe(stripes, dot):
+    '''Returns stripe in which dot is located from stripe list'''
     return filter(lambda x: dot_in_stripe(dot, x), stripes).__next__()
 
 
 def dot_between_edges(dot, edges):
+    '''True if dot is in left of one edge and right of another'''
     return (
         position_dot_edge(dot, edges[0]) *
         position_dot_edge(dot, edges[1]) < 0
@@ -57,6 +82,7 @@ def dot_between_edges(dot, edges):
 
 
 def check_edges(edges, dot):
+    '''Return pair of edges, if dot is between them'''
     tuples = []
     for edge in range(len(edges) - 1):
         tuples.append((edges[edge], edges[edge + 1]))
