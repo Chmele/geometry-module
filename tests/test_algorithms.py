@@ -1,6 +1,8 @@
+from algo.jarvis import jarvis
 import unittest
 from models import Point, Vertex, Graph, Edge, BinTree, Node
 from algo import stripe_method as s
+from algo.jarvis import jarvis
 import math
 import functools as f
 from algo import kd_tree_method as kd
@@ -70,6 +72,41 @@ class TestAlgorithms(unittest.TestCase):
         return True
         # print(str(ans[1][(5.0, 7.0)][4]))
         print(str(ans[3][0]))
+
+    def test_jarvis1(self):
+        pts = [
+            Point(1, 4),
+            Point(0, 0),
+            Point(3, 3),
+            Point(3, 1),
+            Point(7, 0),
+            Point(5, 5),
+            Point(5, 2),
+            Point(9, 6)
+        ]
+        hull = [
+            Point(0, 0),
+            Point(1, 4),
+            Point(9, 6),
+            Point(7, 0)
+        ]
+        ans = jarvis(pts)
+        self.assertEqual(ans, hull)
+    
+    def test_jarvis2(self):
+        pts = [
+            Point(3,3),
+            Point(1,1),
+            Point(5,0)
+        ]
+        hull = [
+            Point(1,1),
+            Point(3,3),
+            Point(5,0)
+        ]
+        ans = jarvis(pts)
+        self.assertEqual(ans, hull)
+        
     
     def test_kd_tree(self):
         pts = [
