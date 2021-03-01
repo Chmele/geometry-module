@@ -91,7 +91,7 @@ class TestAlgorithms(unittest.TestCase):
         tree.root.left = Node(Point(3, 6))
         tree.root.left.left = Node(Point(6, 1))
         tree.root.left.left.left = Node(Point(2, 3))
-        tree.root.left.right = Node(Point(5, 3))
+        tree.root.left.right = Node(Point(5, 8))
         tree.root.left.right.left = Node(Point(0, 9))
         
         tree.root.right = Node(Point(15, 5))
