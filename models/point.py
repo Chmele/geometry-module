@@ -2,7 +2,6 @@ import math
 from operator import add, sub
 
 class Point:
-
     def __init__(self, *args):
         self.coords = tuple(map(lambda x: float(x), args))
 
@@ -40,3 +39,6 @@ class Point:
     def dist_to(self, other):
         s = sum([(a - b) ** 2 for a, b in zip(self.coords, other.coords)])
         return math.sqrt(s)
+    
+    def polar_angle_with(self, other):
+        return math.atan2(self.y - other.y, self.x - other.x)
