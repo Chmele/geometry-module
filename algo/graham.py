@@ -1,11 +1,8 @@
-import math
-from models import Point
 from algo.hull_common import direction
 
 
 def graham(points):
-    origin = min(points, key=lambda p: p.y)
-
+    origin = min(points, key=lambda p: tuple(reversed(p.coords)))
     def angle_and_dist(p):
         return (p.polar_angle_with(origin), p.dist_to(origin))
 
@@ -18,5 +15,3 @@ def graham(points):
         ans.append(p)
     
     return ans
-
-

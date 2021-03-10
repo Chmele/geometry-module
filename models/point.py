@@ -2,7 +2,6 @@ import math
 from operator import add, sub
 
 class Point:
-
     def __init__(self, *args):
         self.coords = tuple(map(lambda x: float(x), args))
 

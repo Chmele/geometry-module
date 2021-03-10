@@ -1,11 +1,10 @@
-from algo.jarvis import jarvis
 import unittest
 from models import Point, Vertex, Graph, Edge, BinTree, Node
 from algo import stripe_method as s
-from algo.jarvis import jarvis
-import math
-import functools as f
 from algo import kd_tree_method as kd
+from algo.jarvis import jarvis
+from algo.graham import graham
+import math
 
 
 class TestAlgorithms(unittest.TestCase):
@@ -150,3 +149,70 @@ class TestAlgorithms(unittest.TestCase):
         self.assertEqual(sorted(pts), next(ans))
         self.assertEqual(tree, next(ans))
         self.assertEqual(r_pts, sorted(next(ans)))
+
+    def test_graham1(self):
+        pts = [
+            Point(7, 0),
+            Point(3, 3),
+            Point(0, 0)
+        ]
+        hull = [
+            Point(0, 0),
+            Point(7, 0),
+            Point(3, 3)
+        ]
+        ans = graham(pts)
+        print(*ans)
+        self.assertEqual(ans, hull)
+
+    def test_graham2(self):
+        pts = [
+            Point(3, 10),
+            Point(6, 8),
+            Point(3, 5),
+            Point(2, 8),
+            Point(4, 8),
+            Point(5, 5),
+            Point(3, 3),
+            Point(7, 7),
+            Point(5, 0),
+            Point(0, 0),
+            Point(10, 3)
+        ]
+        hull = [
+            Point(0, 0),
+            Point(5, 0),
+            Point(10, 3),
+            Point(7, 7),
+            Point(6, 8),
+            Point(3, 10),
+            Point(2, 8)
+        ]
+        ans = graham(pts)
+        print(*ans)
+        self.assertEqual(ans, hull)
+    
+    def test_graham3(self):
+        pts = [
+            Point(2, 8),
+            Point(5, 6),
+            Point(7, 8),
+            Point(8, 11),
+            Point(7, 5),
+            Point(10, 7),
+            Point(11, 5),
+            Point(8, 2),
+            Point(1, 3),
+            Point(5, 2)
+        ]
+        hull = [
+            Point(5, 2),
+            Point(8, 2),
+            Point(11, 5),
+            Point(8, 11),
+            Point(2, 8),
+            Point(1, 3)
+        ]
+        ans = graham(pts)
+        print(*ans)
+        self.assertEqual(ans, hull)
