@@ -156,14 +156,24 @@ class TestAlgorithms(unittest.TestCase):
             Point(3, 3),
             Point(0, 0)
         ]
+        ordered = [
+            Point(0, 0),
+            Point(7, 0),
+            Point(3, 3)
+        ]
+        steps = [
+            ([0, 1, 2], True, 1),
+            ([1, 2, 0], True, 2)
+        ]
         hull = [
             Point(0, 0),
             Point(7, 0),
             Point(3, 3)
         ]
         ans = graham(pts)
-        print(*ans)
-        self.assertEqual(ans, hull)
+        self.assertEqual(ordered, next(ans))
+        self.assertEqual(steps, next(ans))
+        self.assertEqual(hull, next(ans))
 
     def test_graham2(self):
         pts = [
@@ -179,6 +189,34 @@ class TestAlgorithms(unittest.TestCase):
             Point(0, 0),
             Point(10, 3)
         ]
+        ordered = [
+            Point(0, 0),
+            Point(3, 3),
+            Point(5, 0),
+            Point(10, 3),
+            Point(5, 5),
+            Point(7, 7),
+            Point(6, 8),
+            Point(4, 8),
+            Point(3, 10),
+            Point(2, 8),
+            Point(3, 5)
+        ]
+        steps = [
+            ([0, 1, 2], False, 1),
+            ([0, 2, 3], True, 2),
+            ([2, 3, 4], True, 3),
+            ([3, 4, 5], False, 4),
+            ([2, 3, 5], True, 3),
+            ([3, 5, 6], True, 5),
+            ([5, 6, 7], True, 6),
+            ([6, 7, 8], False, 7),
+            ([5, 6, 8], True, 6),
+            ([6, 8, 9], True, 8),
+            ([8, 9, 10], True, 9),
+            ([9, 10, 0], False, 10),
+            ([8, 9, 0], True, 9)
+        ]
         hull = [
             Point(0, 0),
             Point(5, 0),
@@ -189,8 +227,9 @@ class TestAlgorithms(unittest.TestCase):
             Point(2, 8)
         ]
         ans = graham(pts)
-        print(*ans)
-        self.assertEqual(ans, hull)
+        self.assertEqual(ordered, next(ans))
+        self.assertEqual(steps, next(ans))
+        self.assertEqual(hull, next(ans))
     
     def test_graham3(self):
         pts = [
@@ -205,6 +244,33 @@ class TestAlgorithms(unittest.TestCase):
             Point(1, 3),
             Point(5, 2)
         ]
+        ordered = [
+            Point(5, 2),
+            Point(8, 2),
+            Point(7, 5),
+            Point(11, 5),
+            Point(10, 7),
+            Point(8, 11),
+            Point(7, 8),
+            Point(2, 8),
+            Point(5, 6),
+            Point(1, 3)
+        ]
+        steps = [
+            ([0, 1, 2], True, 1),
+            ([1, 2, 3], False, 2),
+            ([0, 1, 3], True, 1),
+            ([1, 3, 4], True, 3),
+            ([3, 4, 5], False, 4),
+            ([1, 3, 5], True, 3),
+            ([3, 5, 6], True, 5),
+            ([5, 6, 7], False, 6),
+            ([3, 5, 7], True, 5),
+            ([5, 7, 8], True, 7),
+            ([7, 8, 9], False, 8),
+            ([5, 7, 9], True, 7),
+            ([7, 9, 0], True, 9)
+        ]
         hull = [
             Point(5, 2),
             Point(8, 2),
@@ -214,5 +280,6 @@ class TestAlgorithms(unittest.TestCase):
             Point(1, 3)
         ]
         ans = graham(pts)
-        print(*ans)
-        self.assertEqual(ans, hull)
+        self.assertEqual(ordered, next(ans))
+        self.assertEqual(steps, next(ans))
+        self.assertEqual(hull, next(ans))
