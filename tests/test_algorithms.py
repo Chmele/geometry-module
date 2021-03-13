@@ -300,3 +300,11 @@ class TestAlgorithms(unittest.TestCase):
 
         self.assertEqual(res, 3)
         self.assertEqual(res2, 4)
+
+        p1 = Point(2, 1)
+        p2 = Point(1, 2)
+        p3 = Point(0, 3)
+        l = Loci()
+        l.append_points(p1, p2, p3)
+        res = l.get_points_in_rect(((0.5, 2.5), (0.5, 2.5)))
+        self.assertEqual(res, 2)
