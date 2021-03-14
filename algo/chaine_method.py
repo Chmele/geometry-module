@@ -239,27 +239,6 @@ def findDot(graph: OrientedGraph, point: Point) -> Tuple:
         root = Node(chainList[len(chainList) // 2])
         tree = BinTree(root)
         tree.make_tree(chainList, root)
-        tree.search_region(point)
-
-    
-"""
-непотрібний текст чисто для рофлів
-фцвфдцаіолаицларфі
-уацуоаидфлураилдиуада
-ЛФЦиалоІУАИолр алфцуа
-
-уораиоріуа  доуаишдуаи
-
-жопа жопа хуй хуй
-Оваидіоруиаор цродуа
-
-
-фуаидорфу адро ЦУ
-
-ФУРАИ ОДА ОДФУ ДЦИ ФУАДИЦИУАГУИА 
-ІВФЦВахахахахха
-хахахахахаххаххахахаха
-"""
-
+        yield tree.search_region(point)
         
     
