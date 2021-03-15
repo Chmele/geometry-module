@@ -5,6 +5,7 @@ from algo import kd_tree_method as kd
 from algo.jarvis import jarvis
 from algo.graham import graham
 from algo.quickhull import quickhull
+from algo.loci import Loci
 import math
 
 
@@ -354,3 +355,27 @@ class TestAlgorithms(unittest.TestCase):
         ans = quickhull(pts)
         self.assertEqual(tree, next(ans))
         self.assertEqual(hull, next(ans))
+
+    def test_loci(self):
+        l = Loci()
+        p1 = Point(1, 1)
+        p2 = Point(2, 1)
+        p3 = Point(2, 3)
+        p4 = Point(2, 2)
+
+        l.append_points(p1, p2, p3, p4)
+        q = l.query(Point(2.5, 0.5))
+        self.assertEqual(q, 0)
+        res = l.get_points_in_rect(((1.5, 2.5),(0.5, 3.5)))
+        res2 = l.get_points_in_rect(((0.5, 2.5),(0.5, 3.5)))
+
+        self.assertEqual(res, 3)
+        self.assertEqual(res2, 4)
+
+        p1 = Point(2, 1)
+        p2 = Point(1, 2)
+        p3 = Point(0, 3)
+        l = Loci()
+        l.append_points(p1, p2, p3)
+        res = l.get_points_in_rect(((0.5, 2.5), (0.5, 2.5)))
+        self.assertEqual(res, 2)

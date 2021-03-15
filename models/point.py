@@ -1,9 +1,14 @@
 import math
 from operator import add, sub
+from functools import reduce
 
 class Point:
     def __init__(self, *args):
         self.coords = tuple(map(lambda x: float(x), args))
+
+    def dominating(self, other):
+        """True if each self coordinate is bigger than other"""
+        return reduce(lambda a, b: a and b[0] >= b[1], zip(self.coords, other.coords), True)
 
     @property
     def x(self):
@@ -21,10 +26,11 @@ class Point:
     def dim(self):
         return len(self.coords)
 
+
     @property
     def norm(self):
         return math.sqrt(sum(x ** 2 for x in self.coords))
-
+    
     def __str__(self):
         return "(%s, %s)" % (self.x, self.y)
 
@@ -67,3 +73,9 @@ class Point:
         v2.normalize()
     
         return math.acos(v1.dot_product_with(v2) / v1.norm * v2.norm)
+    
+    def __hash__(self):
+        return hash(self.coords)
+
+    def __repr__(self) -> str:
+        return str(self)
