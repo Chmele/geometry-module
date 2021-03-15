@@ -147,7 +147,7 @@ def sort_VOUT(edges: List[Edge]):
 
     return sorted_VOUT
 
-def balancingAlgor(weightTable: OrderedDict):
+def balance(weightTable: OrderedDict):
     counter = 0
     dict_length = len(weightTable) - 1
     for vertex, vertex_data in weightTable.items():
@@ -187,7 +187,7 @@ def balancingAlgor(weightTable: OrderedDict):
 
         counter += 1
     
-def creatingChains(weightTable: OrderedDict):
+def create_chains(weightTable: OrderedDict):
 
     chainList = list()
     chain = list()
@@ -224,8 +224,8 @@ def findDot(graph: OrientedGraph, point: Point) -> Tuple:
         return (None, None)
     else:
         weightTable = createStructure(graph)
-        balancingAlgor(weightTable = weightTable)
-        chainList = creatingChains(weightTable)
+        balance(weightTable = weightTable)
+        chainList = create_chains(weightTable)
 
         root = Node(chainList[len(chainList) // 2])
         tree = BinTree(root)
