@@ -3,13 +3,13 @@ from typing import List, Tuple, OrderedDict
 from collections import OrderedDict
 
 class NodeWithParent(Node):
-    def __init__(self,parent = None):
+    def __init__(self, data, parent = None):
         self.parent = parent
-        super().__init__()
+        super().__init__(data)
 
 class BinTreeChains(BinTree):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, root: Node, x_range, y_range):
+        super().__init__(root, x_range, y_range)
     
     def make_tree(self, list: List, node: Node):
         mid = len(list) // 2
@@ -51,9 +51,9 @@ class BinTreeChains(BinTree):
                 return(current_node, None)
 
 class OrientedEdge(Edge):
-    def __init__(self, weight: int):
+    def __init__(self, v1, v2, weight: int):
         self.weight = weight
-        super().__init__()
+        super().__init__(v1, v2)
 
     def __hash__(self):
         return super().__hash__()
