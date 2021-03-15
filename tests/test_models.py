@@ -22,3 +22,11 @@ class TestModels(unittest.TestCase):
         g.add_edge(v2, v1)
 
         self.assertEqual(len(g.edges), 1)
+
+    def test_point_domination(self):
+        a = Point(1,2)
+        b = Point(3,4)
+        c = Point(2,2)
+        self.assertTrue(b.dominating(a))
+        self.assertTrue(b.dominating(c))
+        self.assertFalse(a.dominating(c))
