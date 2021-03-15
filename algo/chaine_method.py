@@ -4,8 +4,8 @@ from collections import OrderedDict
 
 class NodeWithParent(Node):
     def __init__(self,parent = None):
-        super().__init__()
         self.parent = parent
+        super().__init__()
 
 class BinTreeChains(BinTree):
     def __init__(self):
@@ -52,8 +52,8 @@ class BinTreeChains(BinTree):
 
 class OrientedEdge(Edge):
     def __init__(self, weight: int):
-        super().__init__()
         self.weight = weight
+        super().__init__()
 
     def __hash__(self):
         return super().__hash__()
@@ -227,8 +227,8 @@ def findDot(graph: OrientedGraph, point: Point) -> Tuple:
         balance(weightTable = weightTable)
         chainList = create_chains(weightTable)
 
-        root = Node(chainList[len(chainList) // 2])
-        tree = BinTree(root)
+        root = NodeWithParent(data = chainList[len(chainList) // 2])
+        tree = BinTreeChains(root)
         tree.make_tree(chainList, root)
         yield tree.search_dot(point)
         
