@@ -1,24 +1,15 @@
-from models import Graph, Vertex, Edge, Point
+from models import Graph, Vertex, Edge, Point, BinTree, Node
 from typing import List, Tuple, OrderedDict
 from collections import OrderedDict
 
-class Node:
-    def __init__(self, data, parent = None):
+class NodeWithParent(Node):
+    def __init__(self,parent = None):
+        super().__init__()
         self.parent = parent
-        self.data = data
-        self.left = None
-        self.right = None
 
-    def __eq__(self, other):
-        return (
-            self.data == other.data and
-            self.left == other.left and
-            self.right == other.right
-        )
-
-class BinTree:
-    def __init__(self, root: Node):
-        self.root = root
+class BinTreeChains(BinTree):
+    def __init__(self):
+        super().__init__()
     
     def make_tree(self, list: List, node: Node):
         mid = len(list) // 2
@@ -37,7 +28,7 @@ class BinTree:
         self.make_tree(list_l, node.left)
         self.make_tree(list_r, node.right)
 
-    def search_region(self, point: Point) -> Tuple:
+    def search_dot(self, point: Point) -> Tuple:
         current_node = self.root 
         while not (current_node.left == None and current_node.right == None):
             edge = list(filter(lambda edge: edge.v1.point.y >= point.y and edge.v2.point.y < point.y, current_node.data))[0]
@@ -239,6 +230,6 @@ def findDot(graph: OrientedGraph, point: Point) -> Tuple:
         root = Node(chainList[len(chainList) // 2])
         tree = BinTree(root)
         tree.make_tree(chainList, root)
-        yield tree.search_region(point)
+        yield tree.search_dot(point)
         
     
