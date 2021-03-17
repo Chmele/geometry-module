@@ -6,7 +6,7 @@ from algo.jarvis import jarvis
 import math
 import functools as f
 from algo import kd_tree_method as kd
-
+from algo import chaine_method
 
 class TestAlgorithms(unittest.TestCase):
     '''Algorithm tests'''
@@ -150,3 +150,64 @@ class TestAlgorithms(unittest.TestCase):
         self.assertEqual(sorted(pts), next(ans))
         self.assertEqual(tree, next(ans))
         self.assertEqual(r_pts, sorted(next(ans)))
+
+    def test_functions_in_chain_methode(self):
+        dot = Point(4, 3)
+        graph = chaine_method.OrientedGraph()
+
+        v1 = Vertex(Point(4, 2))
+        v2 = Vertex(Point(2, 4))
+        v3 = Vertex(Point(6, 5))
+        v4 = Vertex(Point(5, 7))
+        
+        graph.add_vertex(v1)
+        graph.add_vertex(v2)
+        graph.add_vertex(v3)
+        graph.add_vertex(v4)
+
+        e1 = chaine_method.OrientedEdge(v1, v2, 1)
+        e2 = chaine_method.OrientedEdge(v1, v3, 1)
+        e3 = chaine_method.OrientedEdge(v2, v3, 1)
+        e4 = chaine_method.OrientedEdge(v2, v4, 1)
+        e5 = chaine_method.OrientedEdge(v3, v4, 1)
+
+        graph.add_edge(v1, v2, 1)
+        graph.add_edge(v1, v3, 1)
+        graph.add_edge(v2, v3, 1)
+        graph.add_edge(v2, v4, 1)
+        graph.add_edge(v3, v4, 1)
+        
+        def test_create_sctructure(graph: chaine_method.OrientedGraph):
+            ans = chaine_method.createStructure(graph)
+            true_structre ={
+                v1:{"VIN": [], "VOUT": [e1, e2], "WIN": 0, "WOUT": 2}, 
+                v2:{"VIN": [e1], "VOUT": [e4, e3], "WIN": 1, "WOUT": 2}, 
+                v3:{"VIN": [e3, e2], "VOUT": [e5], "WIN": 2, "WOUT": 1}, 
+                v4:{"VIN": [e4, e5], "VOUT": [], "WIN": 0, "WOUT": 2}, 
+            }
+            self.assertEqual(true_structre, ans)
+        
+        test_create_sctructure(graph)
+    """
+    def test_chain_methode(self):
+        dot = Point(4, 3)
+        graph = Graph()
+        v1 = Vertex(Point(4, 2))
+        v2 = Vertex(Point(2, 4))
+        v3 = Vertex(Point(6, 5))
+        v4 = Vertex(Point(5, 7))
+        
+        graph.add_vertex(v1)
+        graph.add_vertex(v2)
+        graph.add_vertex(v3)
+        graph.add_vertex(v4)
+        
+        graph.add_edge(v1, v2)
+        graph.add_edge(v1, v3)
+        graph.add_edge(v2, v3)
+        graph.add_edge(v2, v4)
+        graph.add_edge(v3, v4)
+
+        chaine_method.findDot(graph, )
+    """
+        
