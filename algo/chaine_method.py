@@ -1,90 +1,6 @@
-from models import Graph, Vertex, Edge, Point, BinTree, Node
+from models import Graph, Vertex, Edge, Point, BinTree, Node, NodeWithParent, BinTreeChains, OrientedEdge, OrientedGraph
 from typing import List, Tuple, OrderedDict
 from collections import OrderedDict
-
-class NodeWithParent(Node):
-    def __init__(self, data, parent = None):
-        self.parent = parent
-        super().__init__(data)
-
-class BinTreeChains(BinTree):
-    def __init__(self, root: Node, x_range, y_range):
-        super().__init__(root, x_range, y_range)
-    
-    def make_tree(self, list: List, node: Node):
-        mid = len(list) // 2
-
-        if mid == 0:
-            return
-        
-        list_l = list[:mid]
-        list_r = list[-mid:]
-        left, right = list_l[mid // 2], list_r[mid // 2]
-
-        node.left = Node(left, node)
-        if (node.data != right):
-            node.right = Node(right, node)
-
-        self.make_tree(list_l, node.left)
-        self.make_tree(list_r, node.right)
-
-    def search_dot(self, point: Point) -> Tuple:
-        current_node = self.root 
-        while not (current_node.left == None and current_node.right == None):
-            edge = list(filter(lambda edge: edge.v1.point.y >= point.y and edge.v2.point.y < point.y, current_node.data))[0]
-            location = (point.x - edge.v1.point.x)*(edge.v2.point.y - edge.v1.point.y) - (point.y - edge.v1.point.y)*(edge.v2.point.x - edge.v1.point.x)
-            if location > 0:
-                
-                if current_node.right:
-                    current_node = current_node.right
-                    left_parent = current_node.parent
-                else:
-                    return (left_parent, current_node)
-            elif location < 0:
-                
-                if current_node.left:
-                    current_node = current_node.left
-                    right_parent = current_node.parent
-                else:
-                    return (current_node, right_parent)
-            else:
-                return(current_node, None)
-
-class OrientedEdge(Edge):
-    def __init__(self, v1, v2, weight: int):
-        self.weight = weight
-        super().__init__(v1, v2)
-
-    def __hash__(self):
-        return super().__hash__()
-
-    def __eq__(self, other: Edge):
-        return (self.v1, self.v2) == (other.v1, other.v2)
-    
-class OrientedGraph(Graph):
-    def __init__(self):
-        super().__init__()
-    
-    def add_edge(self, v1: Vertex, v2: Vertex, weight: int):
-        if (v1 in self.vertices and v2 in self.vertices):
-            self.edges.add(OrientedEdge(v1, v2, weight))
-
-    def graph_as_dict(self) -> dict:
-        return { edge.v1 : (edge.v2, edge.weight) for edge in self.edges}
-
-    def _get_sorted_by_y_verticies(self) -> List:
-        return list(sorted(self.vertices, key = lambda x: x.point.y))
-    
-    def isRegularGraph(self) -> bool:
-        y_sorted_verticies = self._get_sorted_by_y_verticies()
-        y_sorted_verticies = y_sorted_verticies[1:len(y_sorted_verticies) - 2]
-        directions = self._graph_as_dict()
-        for vertex in y_sorted_verticies:
-            if vertex not in directions.keys():
-                return False
-            if vertex not in [vertex for vertex, weight in list(directions.values())]:
-                return False
-        return True
 
 
 def createStructure(graph: OrientedGraph) -> OrderedDict:
@@ -112,12 +28,12 @@ def createStructure(graph: OrientedGraph) -> OrderedDict:
             if vertex == end:
                 VIN.append(edge)
         
-            VIN.sort(key = lambda x: x.v2.point.x, reversed = True) 
+            VIN.sort(key = lambda x: x.v2.point.x, reverse = True) 
             VOUT = sort_VOUT(VOUT)
         
         vertex_data["VIN"] = VIN
         vertex_data["VOUT"] = VOUT
-        vertex_date["WIN"] = sum(edge.weight for edge in VIN)
+        vertex_data["WIN"] = sum(edge.weight for edge in VIN)
         vertex_data["WOUT"] = sum(edge.weight for edge in VOUT)
 
         weight_table[vertex] = vertex_data
@@ -125,15 +41,18 @@ def createStructure(graph: OrientedGraph) -> OrderedDict:
 
         
 def sort_VOUT(edges: List[Edge]):
+    if len(edges) < 2:
+        return edges
+    
     less_then_origin = list()
     greater_then_origin = list()
     as_origin = None
     sorted_VOUT = list()
 
     for edge in edges:
-        if edge.v2.x > edge.v1.x:
+        if edge.v2.point.x > edge.v1.point.x:
             greater_then_origin.append(edge)
-        elif edge.v2.x < edge.v1.x:
+        elif edge.v2.point.x < edge.v1.point.x:
             less_then_origin.append(edge)
         else:
             as_origin = edge
@@ -232,4 +151,41 @@ def findDot(graph: OrientedGraph, point: Point) -> Tuple:
         tree.make_tree(chainList, root)
         yield tree.search_dot(point)
         
+if __name__ == "__main__":
+    dot = Point(4, 3)
+    graph = OrientedGraph()
+
+    v1 = Vertex(Point(4, 2))
+    v2 = Vertex(Point(2, 4))
+    v3 = Vertex(Point(6, 5))
+    v4 = Vertex(Point(5, 7))
     
+    graph.add_vertex(v1)
+    graph.add_vertex(v2)
+    graph.add_vertex(v3)
+    graph.add_vertex(v4)
+
+    e1 = OrientedEdge(v1, v2, 1)
+    e2 = OrientedEdge(v1, v3, 1)
+    e3 = OrientedEdge(v2, v3, 1)
+    e4 = OrientedEdge(v2, v4, 1)
+    e5 = OrientedEdge(v3, v4, 1)
+
+    graph.add_edge(v1, v2, 1)
+    graph.add_edge(v1, v3, 1)
+    graph.add_edge(v2, v3, 1)
+    graph.add_edge(v2, v4, 1)
+    graph.add_edge(v3, v4, 1)
+    
+    def test_create_sctructure(graph: chaine_method.OrientedGraph):
+        ans = createStructure(graph)
+        true_structre ={
+            v1:{"VIN": [], "VOUT": [e1, e2], "WIN": 0, "WOUT": 2}, 
+            v2:{"VIN": [e1], "VOUT": [e4, e3], "WIN": 1, "WOUT": 2}, 
+            v3:{"VIN": [e3, e2], "VOUT": [e5], "WIN": 2, "WOUT": 1}, 
+            v4:{"VIN": [e4, e5], "VOUT": [], "WIN": 0, "WOUT": 2}, 
+        }
+        if true_structre == ans:
+            return True
+    
+    print(test_create_sctructure(graph))
