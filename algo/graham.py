@@ -21,7 +21,7 @@ def sort_points(points, origin, min_point):
     def angle_and_dist(p):
         p_angle = p.polar_angle_with(origin)
         angle = p_angle if p_angle >= min_angle else 2 * pi + p_angle
-        return (angle, p.dist_to(origin))
+        return (angle, p.dist_to_point(origin))
     
     return sorted(points, key=angle_and_dist)
 
