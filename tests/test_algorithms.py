@@ -1,11 +1,12 @@
 import unittest
-from models import Point, Vertex, Graph, Edge, BinTree, KdTree, Node
+from models import Point, Vertex, Graph, Edge, BinTree, KdTree, Node, OrientedGraph, OrientedEdge, NodeWithParent
 from algo import stripe_method as s
 from algo import kd_tree_method as kd
 from algo.jarvis import jarvis
 from algo.graham import graham
 from algo.quickhull import quickhull
 from algo.loci import Loci
+from algo.chaine_method import createStructure
 import math
 
 class TestAlgorithms(unittest.TestCase):
@@ -378,3 +379,41 @@ class TestAlgorithms(unittest.TestCase):
         l.append_points(p1, p2, p3)
         res = l.get_points_in_rect(((0.5, 2.5), (0.5, 2.5)))
         self.assertEqual(res, 2)
+
+    def test_chain_methode(self):
+        graph = OrientedGraph()
+
+        v1 = Vertex(Point(4, 2))
+        v2 = Vertex(Point(2, 4))
+        v3 = Vertex(Point(6, 5))
+        v4 = Vertex(Point(5, 7))
+        
+        e1 = OrientedEdge(v1, v2, 1)
+        e2 = OrientedEdge(v1, v3, 1)
+        e3 = OrientedEdge(v2, v3, 1)
+        e4 = OrientedEdge(v2, v4, 1)
+        e5 = OrientedEdge(v3, v4, 1)
+
+        graph.add_vertex(v1)
+        graph.add_vertex(v2)
+        graph.add_vertex(v3)
+        graph.add_vertex(v4)
+
+        graph.add_edge(v1, v2, 1)
+        graph.add_edge(v1, v3, 1)
+        graph.add_edge(v2, v3, 1)
+        graph.add_edge(v2, v4, 1)
+        graph.add_edge(v3, v4, 1)
+
+        def test_structure(graph: OrientedGraph):
+            return createStructure(graph)
+        
+        weight_table_test = test_structure(graph)
+        weigth_table_true = {
+            v1: {"VIN": [], "VOUT": [e1, e2], "WIN": 0, "WOUT": 2},
+            v2: {"VIN": [e1], "VOUT": [e4, e3], "WIN": 1, "WOUT": 2},
+            v3: {"VIN": [e3, e2], "VOUT": [e5], "WIN": 2, "WOUT": 1},
+            v4: {"VIN": [e4, e5], "VOUT": [], "WIN": 2, "WOUT": 0}
+        }
+        
+        self.assertEqual(weight_table_test, weigth_table_true)
