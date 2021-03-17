@@ -1,5 +1,7 @@
+from models.polygon import Polygon
 import unittest
-from models import Point, Vertex, Graph
+from models import Point, Vertex, Graph, Vector
+import math
 
 
 class TestModels(unittest.TestCase):
@@ -30,3 +32,20 @@ class TestModels(unittest.TestCase):
         self.assertTrue(b.dominating(a))
         self.assertTrue(b.dominating(c))
         self.assertFalse(a.dominating(c))
+
+    def test_vectors(self):
+        a = Vector([1,1])
+        b = Vector([0,12])
+        self.assertAlmostEqual(a.angle(b), math.pi/4)
+
+    def polygon_in(self):
+        p1 = Point(1, 1)
+        p2 = Point(1, -1)
+        p3 = Point(-1, -1)
+        p4 = Point(-1, 1)
+        p = Polygon([p1, p2, p3, p4])
+
+        p0 = Point(0,0)
+        pn = Point(1.1, 1)
+        self.assertEqual(p0 in p, True)
+        self.assertNotEqual(pn in p, True)
