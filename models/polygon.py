@@ -15,6 +15,6 @@ class Polygon:
         def angle(center, p1, p2):
             v1 = Vector.from_two_points(p1, center)
             v2 = Vector.from_two_points(p2, center)
-            return v1.angle(v2)
+            return v1.signed_angle(v2)
         total_angle = reduce(lambda accum, a: accum+angle(point, a[0], a[1]), pairs, 0)
-        return total_angle > math.pi / 2
+        return total_angle > math.pi

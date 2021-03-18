@@ -15,9 +15,24 @@ class Vector:
     def __mul__(self, other):
         return sum((i * j for i, j in zip(self.coords, other.coords)))
 
+    def __getitem__(self, key):
+        return self.coords[key]
+
     def angle(self, other):
         if len(self) == len(other):
             return math.acos((self*other)/(self.euclidean_module*other.euclidean_module))
+
+    def signed_angle(self, other):
+        # angle = self.angle(other)
+        # if math.sin(angle) < 0:
+        #     return -angle
+        # return angle
+
+        # return math.atan2(other.coords[1],other.coords[0]) - math.atan2(self.coords[1], self.coords[0])
+
+        def abs_vect_mul_2d(v1, v2):
+            return v1[0]*v2[1] - v1[1]*v2[0]
+        return math.asin(abs_vect_mul_2d(self, other) / (self.euclidean_module*other.euclidean_module))
 
     @staticmethod
     def from_two_points( p1, p2):
