@@ -18,7 +18,7 @@ class Vector:
     def angle(self, other):
         if len(self) == len(other):
             return math.acos((self*other)/(self.euclidean_module*other.euclidean_module))
-            
-    @classmethod
+
+    @staticmethod
     def from_two_points( p1, p2):
         return Vector((p1 - p2).coords)

@@ -38,7 +38,7 @@ class TestModels(unittest.TestCase):
         b = Vector([0,12])
         self.assertAlmostEqual(a.angle(b), math.pi/4)
 
-    def polygon_in(self):
+    def test_polygon_in(self):
         p1 = Point(1, 1)
         p2 = Point(1, -1)
         p3 = Point(-1, -1)
@@ -47,5 +47,5 @@ class TestModels(unittest.TestCase):
 
         p0 = Point(0,0)
         pn = Point(1.1, 1)
-        self.assertEqual(p0 in p, True)
-        self.assertNotEqual(pn in p, True)
+        self.assertEqual(p.contains_point(p0), True)
+        self.assertNotEqual(p.contains_point(pn), True)
