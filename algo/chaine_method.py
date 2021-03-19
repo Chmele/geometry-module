@@ -28,20 +28,27 @@ def createStructure(graph: OrientedGraph) -> OrderedDict:
             if vertex == end:
                 VIN.append(edge)
         
-            VIN.sort(key = lambda x: x.v2.point.x, reverse = True) 
-            VOUT = sort_VOUT(VOUT)
+        VIN.sort(key = lambda x: x.v2.point.x, reverse = True) 
+        VOUT = sort_VOUT(VOUT)
         
         vertex_data["VIN"] = VIN
         vertex_data["VOUT"] = VOUT
-        vertex_data["WIN"] = sum(edge.weight for edge in VIN)
-        vertex_data["WOUT"] = sum(edge.weight for edge in VOUT)
+        if not VIN:
+            vertex_data["WIN"] = 0
+        else:
+            vertex_data["WIN"] = sum(edge.weight for edge in VIN)
+        
+        if not VOUT:
+            vertex_data["WOUT"] = 0 
+        else:
+            vertex_data["WOUT"] = sum(edge.weight for edge in VOUT)
 
         weight_table[vertex] = vertex_data
     return weight_table
 
         
 def sort_VOUT(edges: List[Edge]):
-    if len(edges) < 2:
+    if not edges:
         return edges
     
     less_then_origin = list()
@@ -57,10 +64,12 @@ def sort_VOUT(edges: List[Edge]):
         else:
             as_origin = edge
     
-    less_then_origin.sort(key = lambda x: (x.v2.point.y - x.v1.point.y)/(x.v1.point.x - x.v2.point.x))
-    greater_then_origin.sort(key = lambda x: (x.v2.point.y - x.v1.point.y)/(x.v2.point.x - x.v1.point.x))
-    less_then_origin.append(as_origin)
+    less_then_origin.sort(key = lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v1.point.x - edge.v2.point.x))
+    greater_then_origin.sort(key = lambda x: (edge.v2.point.y - edge.v1.point.y)/(edge.v2.point.x - edge.v1.point.x))
 
+    if as_origin != None:
+        less_then_origin.append(as_origin)
+    
     sorted_VOUT.extend(less_then_origin)
     sorted_VOUT.extend(greater_then_origin)
 
@@ -150,42 +159,3 @@ def findDot(graph: OrientedGraph, point: Point) -> Tuple:
         tree = BinTreeChains(root)
         tree.make_tree(chainList, root)
         yield tree.search_dot(point)
-        
-if __name__ == "__main__":
-    dot = Point(4, 3)
-    graph = OrientedGraph()
-
-    v1 = Vertex(Point(4, 2))
-    v2 = Vertex(Point(2, 4))
-    v3 = Vertex(Point(6, 5))
-    v4 = Vertex(Point(5, 7))
-    
-    graph.add_vertex(v1)
-    graph.add_vertex(v2)
-    graph.add_vertex(v3)
-    graph.add_vertex(v4)
-
-    e1 = OrientedEdge(v1, v2, 1)
-    e2 = OrientedEdge(v1, v3, 1)
-    e3 = OrientedEdge(v2, v3, 1)
-    e4 = OrientedEdge(v2, v4, 1)
-    e5 = OrientedEdge(v3, v4, 1)
-
-    graph.add_edge(v1, v2, 1)
-    graph.add_edge(v1, v3, 1)
-    graph.add_edge(v2, v3, 1)
-    graph.add_edge(v2, v4, 1)
-    graph.add_edge(v3, v4, 1)
-    
-    def test_create_sctructure(graph: chaine_method.OrientedGraph):
-        ans = createStructure(graph)
-        true_structre ={
-            v1:{"VIN": [], "VOUT": [e1, e2], "WIN": 0, "WOUT": 2}, 
-            v2:{"VIN": [e1], "VOUT": [e4, e3], "WIN": 1, "WOUT": 2}, 
-            v3:{"VIN": [e3, e2], "VOUT": [e5], "WIN": 2, "WOUT": 1}, 
-            v4:{"VIN": [e4, e5], "VOUT": [], "WIN": 0, "WOUT": 2}, 
-        }
-        if true_structre == ans:
-            return True
-    
-    print(test_create_sctructure(graph))

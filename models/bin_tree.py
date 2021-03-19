@@ -1,5 +1,5 @@
-from models import Node
-
+from models import Node, Point
+from typing import Tuple, List
 
 class BinTree:
     def __init__(self, root: Node):
