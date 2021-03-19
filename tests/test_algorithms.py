@@ -1,5 +1,6 @@
 import unittest
 from models import Point, Vertex, Graph, Edge, BinTree, KdTree, Node, OrientedGraph, OrientedEdge, NodeWithParent
+from collections import OrderedDict
 from algo import stripe_method as s
 from algo import kd_tree_method as kd
 from algo.jarvis import jarvis
@@ -409,11 +410,15 @@ class TestAlgorithms(unittest.TestCase):
             return createStructure(graph)
         
         weight_table_test = test_structure(graph)
-        weigth_table_true = {
+        weight_table = {
             v1: {"VIN": [], "VOUT": [e1, e2], "WIN": 0, "WOUT": 2},
             v2: {"VIN": [e1], "VOUT": [e4, e3], "WIN": 1, "WOUT": 2},
             v3: {"VIN": [e3, e2], "VOUT": [e5], "WIN": 2, "WOUT": 1},
             v4: {"VIN": [e4, e5], "VOUT": [], "WIN": 2, "WOUT": 0}
         }
-        
-        self.assertEqual(weight_table_test, weigth_table_true)
+
+        weight_table_true = OrderedDict(weight_table)
+
+        self.assertDictEqual(weight_table_test, weight_table_true)
+
+        def 
