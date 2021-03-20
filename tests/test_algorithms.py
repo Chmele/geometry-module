@@ -385,7 +385,7 @@ class TestAlgorithms(unittest.TestCase):
 
     def test_chain_methode(self):
         graph = OrientedGraph()
-
+        point = Point(4, 5)
         v1 = Vertex(Point(4, 2))
         v2 = Vertex(Point(2, 4))
         v3 = Vertex(Point(6, 5))
@@ -469,8 +469,30 @@ class TestAlgorithms(unittest.TestCase):
             
             return chain_list_test
 
+        def test_find_dot(graph: OrientedGraph, point: Point):
+
+            chain_test = findDot(graph, point)
+        
+            e1_TRUE = copy.deepcopy(e1)
+            e1_TRUE.weight = 0
+            e2_TRUE = copy.deepcopy(e2)
+            e2_TRUE.weight = 0
+            e3_TRUE = copy.deepcopy(e3)
+            e3_TRUE.weight = 0
+            e4_TRUE = copy.deepcopy(e4)
+            e4_TRUE.weight = 0
+            e5_TRUE = copy.deepcopy(e5)
+            e5_TRUE.weight = 0
+
+            chain_true = (
+                [e1_TRUE, e4_TRUE],
+                [e1_TRUE, e3_TRUE, e5_TRUE]
+            )
+
+            self.assertTupleEqual(chain_true, chain_test)
+
         weight_table_test = test_structure(graph)
         test_balancing(weight_table_test)
         test_creating_chains(weight_table_test)
-        
-        
+        test_find_dot(graph, point)
+                
