@@ -35,7 +35,7 @@ class OrientedGraph(Graph):
     
     def isRegularGraph(self) -> bool:
         y_sorted_verticies = self._get_sorted_by_y_verticies()
-        y_sorted_verticies = y_sorted_verticies[1:len(y_sorted_verticies) - 2]
+        y_sorted_verticies = y_sorted_verticies[1:-2]
         directions = self._graph_as_dict()
         for vertex in y_sorted_verticies:
             if vertex not in directions.keys():

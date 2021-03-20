@@ -48,6 +48,8 @@ def createStructure(graph: OrientedGraph) -> OrderedDict:
 
         
 def sort_VOUT(edges: List[Edge]):
+    """Sorting "out" edges of the vertex clockwise"""
+    
     if not edges:
         return edges
     
@@ -76,6 +78,7 @@ def sort_VOUT(edges: List[Edge]):
     return sorted_VOUT
 
 def balance(weightTable: OrderedDict):
+    """balancing weight table"""
     counter = 0
     dict_length = len(weightTable) - 1
     for vertex, vertex_data in weightTable.items():
@@ -116,6 +119,7 @@ def balance(weightTable: OrderedDict):
         counter += 1
     
 def create_chains(weightTable: OrderedDict):
+    """Creating chainse from the start of the graph to the end point of the graph"""
 
     chainList = list()
     chain = list()
@@ -146,7 +150,7 @@ def create_chains(weightTable: OrderedDict):
         current = first
 
     return chainList
-                        
+
 def findDot(graph: OrientedGraph, point: Point) -> Tuple:
     if not graph.isRegularGraph():
         return (None, None)

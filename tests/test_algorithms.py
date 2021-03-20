@@ -7,8 +7,10 @@ from algo.jarvis import jarvis
 from algo.graham import graham
 from algo.quickhull import quickhull
 from algo.loci import Loci
-from algo.chaine_method import createStructure
+from algo.chaine_method import createStructure, balance, create_chains, findDot
 import math
+import copy
+
 
 class TestAlgorithms(unittest.TestCase):
     '''Algorithm tests'''
@@ -407,18 +409,68 @@ class TestAlgorithms(unittest.TestCase):
         graph.add_edge(v3, v4, 1)
 
         def test_structure(graph: OrientedGraph):
-            return createStructure(graph)
-        
+
+            weight_table_test = createStructure(graph)
+
+            weight_table = {
+                v1: {"VIN": [], "VOUT": [e1, e2], "WIN": 0, "WOUT": 2},
+                v2: {"VIN": [e1], "VOUT": [e4, e3], "WIN": 1, "WOUT": 2},
+                v3: {"VIN": [e3, e2], "VOUT": [e5], "WIN": 2, "WOUT": 1},
+                v4: {"VIN": [e4, e5], "VOUT": [], "WIN": 2, "WOUT": 0}
+            }
+
+            weight_table_true = OrderedDict(weight_table)
+
+            self.assertDictEqual(weight_table_test, weight_table_true)
+
+            return weight_table_test
+
+        def test_balancing(weight_table_test: OrderedDict):
+
+            balance(weight_table_test)
+            e1_TRUE = copy.deepcopy(e1)
+            e1_TRUE.weight = 2
+            e5_TRUE = copy.deepcopy(e5)
+            e5_TRUE.weight = 2
+            weight_table_true = {
+                v1: {"VIN": [], "VOUT": [e1_TRUE, e2], "WIN": 0, "WOUT": 3},
+                v2: {"VIN": [e1_TRUE], "VOUT": [e4, e3], "WIN": 2, "WOUT": 2},
+                v3: {"VIN": [e3, e2], "VOUT": [e5_TRUE], "WIN": 2, "WOUT": 2},
+                v4: {"VIN": [e4, e5_TRUE], "VOUT": [], "WIN": 3, "WOUT": 0}
+            }
+
+            weight_table_true = OrderedDict(weight_table_true)
+
+            self.assertDictEqual(weight_table_test, weight_table_true)
+
+        def test_creating_chains(weight_table: OrderedDict):
+            chain_list_test = list()
+
+            chain_list_test = create_chains(weight_table)
+            
+            e1_TRUE = copy.deepcopy(e1)
+            e1_TRUE.weight = 0
+            e2_TRUE = copy.deepcopy(e2)
+            e2_TRUE.weight = 0
+            e3_TRUE = copy.deepcopy(e3)
+            e3_TRUE.weight = 0
+            e4_TRUE = copy.deepcopy(e4)
+            e4_TRUE.weight = 0
+            e5_TRUE = copy.deepcopy(e5)
+            e5_TRUE.weight = 0
+
+            chain_list_true = [
+                [e1_TRUE, e4_TRUE],
+                [e1_TRUE, e3_TRUE, e5_TRUE],
+                [e2_TRUE, e5_TRUE]
+            ]
+            
+            self.assertListEqual(chain_list_test, chain_list_true)
+            
+            return chain_list_test
+
         weight_table_test = test_structure(graph)
-        weight_table = {
-            v1: {"VIN": [], "VOUT": [e1, e2], "WIN": 0, "WOUT": 2},
-            v2: {"VIN": [e1], "VOUT": [e4, e3], "WIN": 1, "WOUT": 2},
-            v3: {"VIN": [e3, e2], "VOUT": [e5], "WIN": 2, "WOUT": 1},
-            v4: {"VIN": [e4, e5], "VOUT": [], "WIN": 2, "WOUT": 0}
-        }
-
-        weight_table_true = OrderedDict(weight_table)
-
-        self.assertDictEqual(weight_table_test, weight_table_true)
-
-        def 
+        test_balancing(weight_table_test)
+        test_creating_chains(weight_table_test)
+        
+        
