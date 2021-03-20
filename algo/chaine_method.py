@@ -27,8 +27,8 @@ def createStructure(graph: OrientedGraph) -> OrderedDict:
                 VOUT.append(edge)
             if vertex == end:
                 VIN.append(edge)
-        
-        VIN.sort(key = lambda x: x.v2.point.x, reverse = True) 
+
+        VIN = sort_VIN(VIN) 
         VOUT = sort_VOUT(VOUT)
         
         vertex_data["VIN"] = VIN
@@ -47,6 +47,35 @@ def createStructure(graph: OrientedGraph) -> OrderedDict:
     return weight_table
 
         
+def sort_VIN(edges: List[Edge]):
+    """Sorting "in" edges of the vertex clockwise"""
+    if not edges:
+        return edges
+    
+    less_then_end = list()
+    greater_then_end = list()
+    as_origin = None
+    sorted_VIN = list()
+
+    for edge in edges:
+        if edge.v1.point.x > edge.v2.point.x:
+            greater_then_end.append(edge)
+        elif edge.v1.point.x < edge.v2.point.x:
+            less_then_end.append(edge)
+        else:
+            as_origin = edge
+    
+    less_then_end.sort(key = lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v2.point.x - edge.v1.point.x))
+    greater_then_end.sort(key = lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v1.point.x - edge.v2.point.x), reverse = True)
+
+    if as_origin != None:
+        less_then_end.append(as_origin)
+    
+    sorted_VIN.extend(less_then_end)
+    sorted_VIN.extend(greater_then_end)
+
+    return sorted_VIN
+
 def sort_VOUT(edges: List[Edge]):
     """Sorting "out" edges of the vertex clockwise"""
     
@@ -67,7 +96,7 @@ def sort_VOUT(edges: List[Edge]):
             as_origin = edge
     
     less_then_origin.sort(key = lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v1.point.x - edge.v2.point.x))
-    greater_then_origin.sort(key = lambda x: (edge.v2.point.y - edge.v1.point.y)/(edge.v2.point.x - edge.v1.point.x))
+    greater_then_origin.sort(key = lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v2.point.x - edge.v1.point.x), reverse = True)
 
     if as_origin != None:
         less_then_origin.append(as_origin)
@@ -89,8 +118,9 @@ def balance(weightTable: OrderedDict):
         if vertex_data["WIN"] > vertex_data["WOUT"]:
             edge_to_update = vertex_data["VOUT"][0]
             old_weight = edge_to_update.weight
-            edge.weight = vertex_data["WIN"] - vertex_data["WOUT"] + 1
+            edge_to_update.weight = vertex_data["WIN"] - vertex_data["WOUT"] + 1
             delta_weight = edge_to_update.weight - old_weight
+            vertex_data["WOUT"] += delta_weight
 
             for vertex_data in weightTable.values():
                 for edge in vertex_data["VIN"]:
@@ -108,8 +138,9 @@ def balance(weightTable: OrderedDict):
         if vertex_data["WIN"] < vertex_data["WOUT"]:
             edge_to_update = vertex_data["VIN"][0]
             old_weight = edge_to_update.weight
-            edge.weight = vertex_data["WOUT"] - vertex_data["WIN"] + 1
+            edge_to_update.weight = vertex_data["WOUT"] - vertex_data["WIN"] + 1
             delta_weight = edge_to_update.weight - old_weight
+            vertex_data["WIN"] += delta_weight
 
             for vertex_data in weightTable.values():
                 for edge in vertex_data["VOUT"]:
