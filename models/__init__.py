@@ -8,3 +8,5 @@ from models.vector import Vector
 from models.polygon import Polygon
 from models.kd_tree import KdTree
 from models.line2d import Line2D
+from models.triangle import Triangle
+from models.polygon import Polygon

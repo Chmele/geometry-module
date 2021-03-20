@@ -1,3 +1,4 @@
+from models.triangle import Triangle
 from models.polygon import Polygon
 import unittest
 from models import Point, Vertex, Graph, Vector
@@ -49,3 +50,36 @@ class TestModels(unittest.TestCase):
         pn = Point(1.1, 1)
         self.assertEqual(p.contains_point(p0), True)
         self.assertNotEqual(p.contains_point(pn), True)
+    
+    def test_point_center(self):
+        p1 = Point(1, 2, 3)
+        p2 = Point(1, 5, 6)
+        p3 = Point(1, 2, 3)
+        self.assertEqual(Point.center((p1, p2, p3)), Point(1, 3, 4))
+
+        p1 = Point(1, 2, 3)
+        p2 = Point(1, 5, 6)
+        p3 = Point(1, 2, 3)
+        p4 = Point(1, 2, 3)
+        self.assertEqual(Point.center((p1, p2, p3, p4)), Point(1, 2.75, 3.75))
+
+    def test_triangle_surface(self):
+        p1 = Point(0, 1)
+        p2 = Point(0, 0)
+        p3 = Point(1, 0)
+        t = Triangle(p1, p2, p3)
+        self.assertAlmostEqual(t.surface, 0.5)
+
+        p1 = Point(-100, 0)
+        p2 = Point(0, 100)
+        p3 = Point(100, 0)
+        t = Triangle(p1, p2, p3)
+        self.assertAlmostEqual(t.surface, 10000)
+
+    def test_polygon_surface(self):
+        p1 = Point(0, 0)
+        p2 = Point(0, 100)
+        p3 = Point(100, 100)
+        p4 = Point(100, 0)
+        p = Polygon((p1, p2, p3, p4))
+        self.assertAlmostEqual(p.surface, 10000)
