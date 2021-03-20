@@ -156,10 +156,10 @@ def create_chains(weightTable: OrderedDict):
     chain = list()
     current = None
 
-    first = weightTable.keys()[0]
-    last = weightTable.keys()[-1]
+    first = list(weightTable.keys())[0]
+    last = list(weightTable.keys())[-1]
     current = first
-    while weightTable.get(first)["WOU"] != 0:
+    while weightTable.get(first)["WOUT"] != 0:
         while current != last:
             edge = weightTable[current]["VOUT"][0]
             if edge.weight == 0:
@@ -178,6 +178,7 @@ def create_chains(weightTable: OrderedDict):
             current = edge.v2
 
         chainList.append(chain)
+        chain = list()
         current = first
 
     return chainList

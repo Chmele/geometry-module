@@ -21,4 +21,7 @@ class OrientedEdge(Edge):
 
     def __eq__(self, other: Edge):
         return (self.v1, self.v2) == (other.v1, other.v2)
+
+    def __repr__(self):
+        return f"OrEdge(weight={repr(self.weight)}, v1={repr(self.v1)}, v2={repr(self.v2)})"
     
