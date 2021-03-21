@@ -35,7 +35,7 @@ class Polygon:
     @property
     def area(self):
         a, b, c, *rest = self.points
-        p = Point.center((a, b, c))
+        p = Point.centroid((a, b, c))
         pairs = self.point_pairs
 
         def accumulate_triangle_area(sum, pair):
