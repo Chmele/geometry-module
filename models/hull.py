@@ -5,7 +5,7 @@ from itertools import cycle, dropwhile, takewhile, chain
 
 class Hull(Polygon):
     def __add__(self, other):
-        p1, p2, p3, *rest = self.points
+        p1, p2, p3 = self.points[:3]
         centroid = Point.center((p1, p2, p3))
         if other.contains_point(centroid):
             points = list(self)+list(other)

@@ -59,7 +59,7 @@ class TestAlgorithms(unittest.TestCase):
         }))
 
         self.assertEqual(ans[2], (5.0, 7.0))
-        # self.assertEqual(ans[3], [Edge(p4, p6), Edge(p3, p6)])
+        self.assertEqual(ans[3], [Edge(p4, p6), Edge(p3, p6)])
 
     def fragmentation_eq(self, f1, f2):
         for i in f1:
@@ -71,8 +71,6 @@ class TestAlgorithms(unittest.TestCase):
                 if item not in f1[i]:
                     return False
         return True
-        # print(str(ans[1][(5.0, 7.0)][4]))
-        print(str(ans[3][0]))
 
     def test_jarvis1(self):
         pts = [
@@ -149,8 +147,8 @@ class TestAlgorithms(unittest.TestCase):
         ans = kd.kd_tree(pts, rx, ry)
         
         self.assertEqual(sorted(pts), next(ans))
-        #self.assertEqual(tree, next(ans))
-        #self.assertEqual(r_pts, sorted(next(ans)))
+        self.assertEqual(tree, next(ans))
+        self.assertEqual(r_pts, sorted(next(ans)))
 
     def test_graham1(self):
         pts = [

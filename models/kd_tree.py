@@ -6,8 +6,8 @@ class KdTree(BinTree):
         self.x_range = x_range
         self.y_range = y_range
     
-    def make_tree(self, list, node: Node, vertical=True):
-        med = len(list) // 2
+    def make_tree(self, points, node: Node, vertical=True):
+        med = len(points) // 2
         if med == 0:
             return
 
@@ -16,8 +16,8 @@ class KdTree(BinTree):
         else:
             sort_key = lambda p: p.x
 
-        list_l = sorted(list[:med], key=sort_key)
-        list_r = sorted(list[-med:], key=sort_key)
+        list_l = sorted(points[:med], key=sort_key)
+        list_r = sorted(points[-med:], key=sort_key)
         left, right = list_l[med // 2], list_r[med // 2]
     
         node.left = Node(left)

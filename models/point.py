@@ -5,7 +5,7 @@ from functools import reduce
 
 class Point:
     def __init__(self, *args):
-        self.coords = tuple(map(lambda x: float(x), args))
+        self.coords = tuple(map(float, args))
 
     def dominating(self, other):
         """True if each self coordinate is bigger than other"""

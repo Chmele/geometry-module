@@ -6,15 +6,15 @@ def jarvis(points):
     lm, ans, length = ind, [points[ind]], len(points)
 
     while True:
-        next = (lm + 1) % length
+        nxt = (lm + 1) % length
         for i in range(length):
-            if i != lm and direction_correct(points, lm, i, next):
-                    next = i
-        lm = next
+            if i != lm and direction_correct(points, lm, i, nxt):
+                    nxt = i
+        lm = nxt
 
         if lm == ind:
             break
-        ans.append(points[next])
+        ans.append(points[nxt])
     
     return ans
 

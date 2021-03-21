@@ -7,24 +7,11 @@ class Polygon:
     def __init__(self, points):
         self.points = points
 
-<<<<<<< HEAD
     def __getitem__(self, key):
         return self.points[key]
 
     @property
     def point_pairs(self):
-=======
-    @property
-    def point_pairs(self):
-        def cyclic_offset(li, n):
-            return li[-n:] + li[:-n]
-
-        return zip(self.points, cyclic_offset(self.points, 1))
-
-    def contains_point(self, point):
-        pairs = self.point_pairs
-    def contains_point(self, point):
->>>>>>> main
         def cyclic_offset(li, n):
             return li[-n:] + li[:-n]
 
@@ -45,7 +32,7 @@ class Polygon:
 
     @property
     def surface(self):
-        a, b, c, *rest = self.points
+        a, b, c = self.points[:3]
         p = Point.center((a, b, c))
         pairs = self.point_pairs
 
