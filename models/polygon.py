@@ -32,7 +32,7 @@ class Polygon:
 
     @property
     def area(self):
-        a, b, c, *rest = self.points
+        a, b, c = self.points[:3]
         p = Point.centroid((a, b, c))
         pairs = self.point_pairs
 
