@@ -1,4 +1,4 @@
-from models import Graph, Vertex, Edge, Point, BinTree, Node, NodeWithParent, BinTreeChains, OrientedEdge, OrientedGraph
+from models import Edge, Point, NodeWithParent, BinTreeChains, OrientedGraph
 from typing import List, Tuple, OrderedDict
 from collections import OrderedDict
 
@@ -10,10 +10,17 @@ def createStructure(graph: OrientedGraph) -> OrderedDict:
     "VOUT" - "out" edges of a vertex sorted clockwise
     "WIN" - sum of VIN weights
     "WOUT" - sum of VOUT weights
-    {vertex : {"VIN": [e1, e2 ...], "VOUT": [e5, e9 ...], "WOUT": 4, "WIN": 5 }}
+    {
+        vertex : {
+            "VIN": [e1, e2 ...],
+            "VOUT": [e5, e9 ...],
+            "WOUT": 4,
+            "WIN": 5
+            }
+    }
     """
     weight_table: OrderedDict = OrderedDict()
-    
+
     for vertex in graph.get_sorted_by_y_verticies():
 
         vertex_data = dict()
@@ -28,30 +35,31 @@ def createStructure(graph: OrientedGraph) -> OrderedDict:
             if vertex == end:
                 VIN.append(edge)
 
-        VIN = sort_VIN(VIN) 
+        VIN = sort_VIN(VIN)
         VOUT = sort_VOUT(VOUT)
-        
+
         vertex_data["VIN"] = VIN
         vertex_data["VOUT"] = VOUT
+        
         if not VIN:
             vertex_data["WIN"] = 0
         else:
             vertex_data["WIN"] = sum(edge.weight for edge in VIN)
-        
+
         if not VOUT:
-            vertex_data["WOUT"] = 0 
+            vertex_data["WOUT"] = 0
         else:
             vertex_data["WOUT"] = sum(edge.weight for edge in VOUT)
 
         weight_table[vertex] = vertex_data
     return weight_table
 
-        
+
 def sort_VIN(edges: List[Edge]):
     """Sorting "in" edges of the vertex clockwise"""
     if not edges:
         return edges
-    
+
     less_then_end = list()
     greater_then_end = list()
     as_origin = None
@@ -64,24 +72,25 @@ def sort_VIN(edges: List[Edge]):
             less_then_end.append(edge)
         else:
             as_origin = edge
-    
-    less_then_end.sort(key = lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v2.point.x - edge.v1.point.x))
-    greater_then_end.sort(key = lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v1.point.x - edge.v2.point.x), reverse = True)
 
-    if as_origin != None:
+    less_then_end.sort(key=lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v2.point.x - edge.v1.point.x))
+    greater_then_end.sort(key=lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v1.point.x - edge.v2.point.x), reverse=True)
+
+    if as_origin is not None:
         less_then_end.append(as_origin)
-    
+
     sorted_VIN.extend(less_then_end)
     sorted_VIN.extend(greater_then_end)
 
     return sorted_VIN
 
+
 def sort_VOUT(edges: List[Edge]):
     """Sorting "out" edges of the vertex clockwise"""
-    
+
     if not edges:
         return edges
-    
+
     less_then_origin = list()
     greater_then_origin = list()
     as_origin = None
@@ -94,17 +103,18 @@ def sort_VOUT(edges: List[Edge]):
             less_then_origin.append(edge)
         else:
             as_origin = edge
-    
-    less_then_origin.sort(key = lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v1.point.x - edge.v2.point.x))
-    greater_then_origin.sort(key = lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v2.point.x - edge.v1.point.x), reverse = True)
 
-    if as_origin != None:
+    less_then_origin.sort(key=lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v1.point.x - edge.v2.point.x))
+    greater_then_origin.sort(key=lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v2.point.x - edge.v1.point.x), reverse=True)
+
+    if as_origin is not None:
         less_then_origin.append(as_origin)
-    
+
     sorted_VOUT.extend(less_then_origin)
     sorted_VOUT.extend(greater_then_origin)
 
     return sorted_VOUT
+
 
 def balance(weightTable: OrderedDict):
     """balancing weight table"""
@@ -126,12 +136,12 @@ def balance(weightTable: OrderedDict):
                 for edge in vertex_data["VIN"]:
                     if edge == edge_to_update:
                         vertex_data["WIN"] += delta_weight
-        
+
         counter += 1
 
     counter = 0
     for vertex, vertex_data in reversed(weightTable.items()):
-        
+
         if counter == dict_length:
             break
 
@@ -148,9 +158,13 @@ def balance(weightTable: OrderedDict):
                         vertex_data["WOUT"] += delta_weight
 
         counter += 1
-    
+
+
 def create_chains(weightTable: OrderedDict):
-    """Creating chainse from the start of the graph to the end point of the graph"""
+    """
+        Creating chains from the start of
+        the graph to the end point of the graph
+    """
 
     chainList = list()
     chain = list()
@@ -166,7 +180,7 @@ def create_chains(weightTable: OrderedDict):
                 weightTable[current]["VOUT"].pop(0)
                 edge = weightTable[current]["VOUT"][0]
                 chain.append(edge)
-                edge.weight -= 1  
+                edge.weight -= 1
                 weightTable[current]["WOUT"] -= 1
                 weightTable[edge.v2]["WIN"] -= 1
             else:
@@ -183,15 +197,16 @@ def create_chains(weightTable: OrderedDict):
 
     return chainList
 
+
 def findDot(graph: OrientedGraph, point: Point) -> Tuple:
     if not graph.isRegularGraph():
         return (None, None)
     else:
         weightTable = createStructure(graph)
-        balance(weightTable = weightTable)
+        balance(weightTable=weightTable)
         chainList = create_chains(weightTable)
 
-        root = NodeWithParent(data = chainList[len(chainList) // 2])
+        root = NodeWithParent(data=chainList[len(chainList) // 2])
         tree = BinTreeChains(root)
         tree.make_tree(chainList, root)
         return tree.search_dot(point)

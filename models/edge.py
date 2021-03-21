@@ -11,6 +11,7 @@ class Edge:
     def __str__(self):
         return '({}, {})'.format(self.v1, self.v2)
 
+
 class OrientedEdge(Edge):
     def __init__(self, v1, v2, weight: int):
         self.weight = weight
@@ -24,4 +25,3 @@ class OrientedEdge(Edge):
 
     def __repr__(self):
         return f"OrEdge(weight={repr(self.weight)}, v1={repr(self.v1)}, v2={repr(self.v2)})"
-    
