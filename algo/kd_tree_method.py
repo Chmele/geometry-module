@@ -1,5 +1,6 @@
 from models import Node, KdTree
 
+
 def kd_tree(points, x_range, y_range):
     ordered = sorted(points)
     yield ordered

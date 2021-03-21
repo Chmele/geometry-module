@@ -10,7 +10,8 @@ import math
 
 
 class TestAlgorithms(unittest.TestCase):
-    '''Algorithm tests'''
+    """Algorithm tests"""
+
     def test_stripe(self):
         p1 = Vertex(Point(7, 0))
         p2 = Vertex(Point(2, 2.5))
@@ -44,19 +45,46 @@ class TestAlgorithms(unittest.TestCase):
         dot = Point(11.5, 5.5)
 
         ans = list(s.stripe(g, dot))
-        self.assertEqual(ans[0], [(-math.inf, 0.0), (0.0, 2.5), (2.5, 3.0), (3.0, 5.0), (5.0, 7.0), (7.0, 8.0), (8.0, 11.0), (11.0, math.inf)])
-       
-        self.assertTrue(self.fragmentation_eq(ans[1], 
-        {
-            (-math.inf, 0.0): [], 
-            (0.0, 2.5): [Edge(p1, p2), Edge(p1, p3)], 
-            (2.5, 3.0): [Edge(p1, p3), Edge(p2, p3), Edge(p2, p5)], 
-            (3.0, 5.0): [Edge(p2, p5), Edge(p3, p6)], 
-            (5.0, 7.0): [Edge(p2, p5), Edge(p4, p5), Edge(p4, p7), Edge(p4, p6), Edge(p3, p6)], 
-            (7.0, 8.0): [Edge(p5, p7), Edge(p4, p7), Edge(p4, p6), Edge(p3, p6)], 
-            (8.0, 11.0): [Edge(p5, p7), Edge(p4, p7), Edge(p7, p6)], 
-            (11.0, math.inf): []
-        }))
+        self.assertEqual(
+            ans[0],
+            [
+                (-math.inf, 0.0),
+                (0.0, 2.5),
+                (2.5, 3.0),
+                (3.0, 5.0),
+                (5.0, 7.0),
+                (7.0, 8.0),
+                (8.0, 11.0),
+                (11.0, math.inf),
+            ],
+        )
+
+        self.assertTrue(
+            self.fragmentation_eq(
+                ans[1],
+                {
+                    (-math.inf, 0.0): [],
+                    (0.0, 2.5): [Edge(p1, p2), Edge(p1, p3)],
+                    (2.5, 3.0): [Edge(p1, p3), Edge(p2, p3), Edge(p2, p5)],
+                    (3.0, 5.0): [Edge(p2, p5), Edge(p3, p6)],
+                    (5.0, 7.0): [
+                        Edge(p2, p5),
+                        Edge(p4, p5),
+                        Edge(p4, p7),
+                        Edge(p4, p6),
+                        Edge(p3, p6),
+                    ],
+                    (7.0, 8.0): [
+                        Edge(p5, p7),
+                        Edge(p4, p7),
+                        Edge(p4, p6),
+                        Edge(p3, p6),
+                    ],
+                    (8.0, 11.0): [Edge(p5, p7), Edge(p4, p7), Edge(p7, p6)],
+                    (11.0, math.inf): [],
+                },
+            )
+        )
 
         self.assertEqual(ans[2], (5.0, 7.0))
         self.assertEqual(ans[3], [Edge(p4, p6), Edge(p3, p6)])
@@ -81,32 +109,18 @@ class TestAlgorithms(unittest.TestCase):
             Point(7, 0),
             Point(5, 5),
             Point(5, 2),
-            Point(9, 6)
-        ]
-        hull = [
-            Point(0, 0),
-            Point(1, 4),
             Point(9, 6),
-            Point(7, 0)
         ]
+        hull = [Point(0, 0), Point(1, 4), Point(9, 6), Point(7, 0)]
         ans = jarvis(pts)
         self.assertEqual(ans, hull)
-    
+
     def test_jarvis2(self):
-        pts = [
-            Point(3,3),
-            Point(1,1),
-            Point(5,0)
-        ]
-        hull = [
-            Point(1,1),
-            Point(3,3),
-            Point(5,0)
-        ]
+        pts = [Point(3, 3), Point(1, 1), Point(5, 0)]
+        hull = [Point(1, 1), Point(3, 3), Point(5, 0)]
         ans = jarvis(pts)
         self.assertEqual(ans, hull)
-        
-    
+
     def test_kd_tree(self):
         pts = [
             Point(0, 9),
@@ -119,7 +133,7 @@ class TestAlgorithms(unittest.TestCase):
             Point(12, 4),
             Point(14, 11),
             Point(15, 5),
-            Point(17, 10)
+            Point(17, 10),
         ]
         rx = [3, 14]
         ry = [0, 8]
@@ -129,7 +143,7 @@ class TestAlgorithms(unittest.TestCase):
         tree.root.left.left.left = Node(Point(2, 3))
         tree.root.left.right = Node(Point(5, 8))
         tree.root.left.right.left = Node(Point(0, 9))
-        
+
         tree.root.right = Node(Point(15, 5))
         tree.root.right.left = Node(Point(12, 4))
         tree.root.right.left.left = Node(Point(10, 2))
@@ -143,33 +157,18 @@ class TestAlgorithms(unittest.TestCase):
             Point(10, 2),
             Point(12, 4),
         ]
-        
+
         ans = kd.kd_tree(pts, rx, ry)
-        
+
         self.assertEqual(sorted(pts), next(ans))
         self.assertEqual(tree, next(ans))
         self.assertEqual(r_pts, sorted(next(ans)))
 
     def test_graham1(self):
-        pts = [
-            Point(7, 0),
-            Point(3, 3),
-            Point(0, 0)
-        ]
-        ordered = [
-            Point(0, 0),
-            Point(7, 0),
-            Point(3, 3)
-        ]
-        steps = [
-            ([0, 1, 2], True, 1),
-            ([1, 2, 0], True, 2)
-        ]
-        hull = [
-            Point(0, 0),
-            Point(7, 0),
-            Point(3, 3)
-        ]
+        pts = [Point(7, 0), Point(3, 3), Point(0, 0)]
+        ordered = [Point(0, 0), Point(7, 0), Point(3, 3)]
+        steps = [([0, 1, 2], True, 1), ([1, 2, 0], True, 2)]
+        hull = [Point(0, 0), Point(7, 0), Point(3, 3)]
         ans = graham(pts)
         self.assertEqual(ordered, next(ans))
         self.assertEqual(steps, next(ans))
@@ -187,7 +186,7 @@ class TestAlgorithms(unittest.TestCase):
             Point(7, 7),
             Point(5, 0),
             Point(0, 0),
-            Point(10, 3)
+            Point(10, 3),
         ]
         ordered = [
             Point(0, 0),
@@ -200,7 +199,7 @@ class TestAlgorithms(unittest.TestCase):
             Point(4, 8),
             Point(3, 10),
             Point(2, 8),
-            Point(3, 5)
+            Point(3, 5),
         ]
         steps = [
             ([0, 1, 2], False, 1),
@@ -215,7 +214,7 @@ class TestAlgorithms(unittest.TestCase):
             ([6, 8, 9], True, 8),
             ([8, 9, 10], True, 9),
             ([9, 10, 0], False, 10),
-            ([8, 9, 0], True, 9)
+            ([8, 9, 0], True, 9),
         ]
         hull = [
             Point(0, 0),
@@ -224,13 +223,13 @@ class TestAlgorithms(unittest.TestCase):
             Point(7, 7),
             Point(6, 8),
             Point(3, 10),
-            Point(2, 8)
+            Point(2, 8),
         ]
         ans = graham(pts)
         self.assertEqual(ordered, next(ans))
         self.assertEqual(steps, next(ans))
         self.assertEqual(hull, next(ans))
-    
+
     def test_graham3(self):
         pts = [
             Point(2, 8),
@@ -242,7 +241,7 @@ class TestAlgorithms(unittest.TestCase):
             Point(11, 5),
             Point(8, 2),
             Point(1, 3),
-            Point(5, 2)
+            Point(5, 2),
         ]
         ordered = [
             Point(5, 2),
@@ -254,7 +253,7 @@ class TestAlgorithms(unittest.TestCase):
             Point(7, 8),
             Point(2, 8),
             Point(5, 6),
-            Point(1, 3)
+            Point(1, 3),
         ]
         steps = [
             ([0, 1, 2], True, 1),
@@ -269,7 +268,7 @@ class TestAlgorithms(unittest.TestCase):
             ([5, 7, 8], True, 7),
             ([7, 8, 9], False, 8),
             ([5, 7, 9], True, 7),
-            ([7, 9, 0], True, 9)
+            ([7, 9, 0], True, 9),
         ]
         hull = [
             Point(5, 2),
@@ -277,29 +276,21 @@ class TestAlgorithms(unittest.TestCase):
             Point(11, 5),
             Point(8, 11),
             Point(2, 8),
-            Point(1, 3)
+            Point(1, 3),
         ]
         ans = graham(pts)
         self.assertEqual(ordered, next(ans))
         self.assertEqual(steps, next(ans))
         self.assertEqual(hull, next(ans))
-    
+
     def test_quickhull1(self):
-        pts = [
-            Point(3, 4),
-            Point(0, 0),
-            Point(7, 2)
-        ]
+        pts = [Point(3, 4), Point(0, 0), Point(7, 2)]
         tree = BinTree(Node([pts[1], pts[0], pts[2]]))
         tree.root.left = Node([pts[1], pts[0], pts[2]])
         tree.root.right = Node([pts[2], pts[1]])
         tree.root.left.left = Node([pts[1], pts[0]])
         tree.root.left.right = Node([pts[0], pts[2]])
-        hull = [
-            pts[1],
-            pts[0],
-            pts[2]
-        ]
+        hull = [pts[1], pts[0], pts[2]]
 
         ans = quickhull(pts)
         self.assertEqual(tree, next(ans))
@@ -318,31 +309,37 @@ class TestAlgorithms(unittest.TestCase):
             Point(14, 10),
             Point(5, 9),
             Point(3, 11),
-            Point(1, 4)
+            Point(1, 4),
         ]
-        tree = BinTree(Node([
-            pts[0],
-            pts[10],
-            pts[9],
-            pts[3],
-            pts[1],
-            pts[8],
-            pts[7],
-            pts[2],
-            pts[4],
-            pts[6],
-            pts[5],
-            pts[11]
-        ]))
+        tree = BinTree(
+            Node(
+                [
+                    pts[0],
+                    pts[10],
+                    pts[9],
+                    pts[3],
+                    pts[1],
+                    pts[8],
+                    pts[7],
+                    pts[2],
+                    pts[4],
+                    pts[6],
+                    pts[5],
+                    pts[11],
+                ]
+            )
+        )
 
         tree.root.left = Node([pts[0], pts[10], pts[9], pts[3], pts[1], pts[8]])
-        tree.root.right = Node([pts[8], pts[7], pts[2], pts[4], pts[6], pts[5], pts[11], pts[0]])
-        
+        tree.root.right = Node(
+            [pts[8], pts[7], pts[2], pts[4], pts[6], pts[5], pts[11], pts[0]]
+        )
+
         tree.root.left.left = Node([pts[0], pts[10], pts[3]])
         tree.root.left.right = Node([pts[3], pts[8]])
         tree.root.left.left.left = Node([pts[0], pts[10]])
         tree.root.left.left.right = Node([pts[10], pts[3]])
-        
+
         tree.root.right.left = Node([pts[8], pts[7]])
         tree.root.right.right = Node([pts[7], pts[4], pts[6], pts[5], pts[11], pts[0]])
         tree.root.right.right.left = Node([pts[7], pts[5]])
@@ -364,8 +361,8 @@ class TestAlgorithms(unittest.TestCase):
         l.append_points(p1, p2, p3, p4)
         q = l.query(Point(2.5, 0.5))
         self.assertEqual(q, 0)
-        res = l.get_points_in_rect(((1.5, 2.5),(0.5, 3.5)))
-        res2 = l.get_points_in_rect(((0.5, 2.5),(0.5, 3.5)))
+        res = l.get_points_in_rect(((1.5, 2.5), (0.5, 3.5)))
+        res2 = l.get_points_in_rect(((0.5, 2.5), (0.5, 3.5)))
 
         self.assertEqual(res, 3)
         self.assertEqual(res2, 4)

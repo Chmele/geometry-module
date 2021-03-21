@@ -13,7 +13,7 @@ class Triangle:
         )
 
     @property
-    def surface(self):
+    def area(self):
         """Heron`s formula"""
         p = sum(self.sides) / 2
         A, B, C = self.sides

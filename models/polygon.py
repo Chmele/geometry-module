@@ -21,8 +21,8 @@ class Polygon:
         pairs = self.point_pairs
 
         def angle(center, p1, p2):
-            v1 = Vector.from_two_points(p1, center)
-            v2 = Vector.from_two_points(p2, center)
+            v1 = Vector.from_two_points(center, p1)
+            v2 = Vector.from_two_points(center, p2)
             return v1.signed_angle(v2)
 
         total_angle = reduce(
@@ -31,12 +31,12 @@ class Polygon:
         return total_angle > math.pi
 
     @property
-    def surface(self):
-        a, b, c = self.points[:3]
-        p = Point.center((a, b, c))
+    def area(self):
+        a, b, c, *rest = self.points
+        p = Point.centroid((a, b, c))
         pairs = self.point_pairs
 
-        def accumulate_triangle_surface(sum, pair):
-            return sum + Triangle(p, pair[0], pair[1]).surface
+        def accumulate_triangle_area(accum, pair):
+            return accum + Triangle(p, pair[0], pair[1]).area
 
-        return reduce(accumulate_triangle_surface, pairs, 0)
+        return reduce(accumulate_triangle_area, pairs, 0)

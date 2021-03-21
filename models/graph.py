@@ -15,5 +15,5 @@ class Graph:
         self.vertices.add(v)
 
     def add_edge(self, v1: Vertex, v2: Vertex):
-        if (v1 in self.vertices and v2 in self.vertices):
+        if v1 in self.vertices and v2 in self.vertices:
             self.edges.add(Edge(v1, v2))
