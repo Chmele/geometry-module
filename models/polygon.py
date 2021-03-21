@@ -23,8 +23,8 @@ class Polygon:
         pairs = zip(self.points, cyclic_offset(self.points, 1))
 
         def angle(center, p1, p2):
-            v1 = Vector.from_two_points(p1, center)
-            v2 = Vector.from_two_points(p2, center)
+            v1 = Vector.from_two_points(center, p1)
+            v2 = Vector.from_two_points(center, p2)
             return v1.signed_angle(v2)
 
         total_angle = reduce(
@@ -33,12 +33,12 @@ class Polygon:
         return total_angle > math.pi
 
     @property
-    def surface(self):
+    def area(self):
         a, b, c, *rest = self.points
         p = Point.center((a, b, c))
         pairs = self.point_pairs
 
-        def accumulate_triangle_surface(sum, pair):
-            return sum + Triangle(p, pair[0], pair[1]).surface
+        def accumulate_triangle_area(sum, pair):
+            return sum + Triangle(p, pair[0], pair[1]).area
 
-        return reduce(accumulate_triangle_surface, pairs, 0)
+        return reduce(accumulate_triangle_area, pairs, 0)
