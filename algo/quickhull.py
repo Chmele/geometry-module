@@ -1,5 +1,4 @@
-from models import Line2D, Node, BinTree, point
-from algo.hull_common import direction
+from models import Line2D, Node, BinTree, Point
 
 
 sort_lr = lambda p: (p.x, -p.y)
@@ -52,6 +51,6 @@ def left_points(points, p1, p2):
     '''Points at the left of vector p1->p2 and p1, p2'''
     return (
         [p1] +
-        list(filter(lambda p: direction(p1, p2, p) < 0, points)) +
+        list(filter(lambda p: Point.direction(p1, p2, p) < 0, points)) +
         [p2]
     )
