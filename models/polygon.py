@@ -7,6 +7,9 @@ class Polygon:
     def __init__(self, points):
         self.points = points
 
+    def __getitem__(self, key):
+        return self.points[key]
+
     @property
     def point_pairs(self):
         def cyclic_offset(li, n):
