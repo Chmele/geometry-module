@@ -1,5 +1,5 @@
 from models import Node, Point, NodeWithParent, Edge
-from typing import Tuple, List, Edge
+from typing import Tuple, List
 
 
 class BinTree:
