@@ -1,7 +1,7 @@
 import unittest
 from models import Point, Vertex, Graph, Edge, BinTree, KdTree, Node
-from algo import stripe_method as s
-from algo import kd_tree_method as kd
+from algo.stripe_method import stripe
+from algo.kd_tree_method import kd_tree
 from algo.jarvis import jarvis
 from algo.graham import graham
 from algo.quickhull import quickhull
@@ -44,7 +44,7 @@ class TestAlgorithms(unittest.TestCase):
 
         dot = Point(11.5, 5.5)
 
-        ans = list(s.stripe(g, dot))
+        ans = list(stripe(g, dot))
         self.assertEqual(
             ans[0],
             [
@@ -158,7 +158,7 @@ class TestAlgorithms(unittest.TestCase):
             Point(12, 4),
         ]
 
-        ans = kd.kd_tree(pts, rx, ry)
+        ans = kd_tree(pts, rx, ry)
 
         self.assertEqual(sorted(pts), next(ans))
         self.assertEqual(tree, next(ans))
