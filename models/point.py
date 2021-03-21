@@ -1,6 +1,7 @@
 import math
 from operator import add, sub
 from functools import reduce
+from models import Vector
 
 
 class Point:
@@ -63,26 +64,31 @@ class Point:
     def polar_angle_with(self, other):
         return math.atan2(self.y - other.y, self.x - other.x)
 
-    def dot_product_with(self, other):
-        return sum(a * b for a, b in zip(self.coords, other.coords))
-
-    def normalize(self):
-        self.coords = tuple(x / self.norm for x in self.coords)
-
     def angle_with(self, point1, point2):
-        """Angle point1 - self - point2 (<= pi)"""
-        v1 = point1 - self
-        v2 = point2 - self
+        """Angle point1 - self - point2 in [-pi, pi]"""
+        v1 = Vector.from_two_points(self, point1)
+        v2 = Vector.from_two_points(self, point2)
         v1.normalize()
         v2.normalize()
 
-        return math.acos(v1.dot_product_with(v2) / v1.norm * v2.norm)
+        return math.acos(v1 * v2 / (v1.euclidean_norm * v2.euclidean_norm))
 
     def __hash__(self):
         return hash(self.coords)
 
     def __repr__(self) -> str:
         return str(self)
+
+    @staticmethod
+    def direction(point1, point2, point3):
+        '''
+            < 0 if point3 is at the left of vector point1->point2;
+            > 0 if point3 is at the right of vector point1->point2;
+            = 0 if point3 is at the vector point1->point2.
+        '''
+        v1 = Vector.from_two_points(point1, point3)
+        v2 = Vector.from_two_points(point1, point2)
+        return v1.cross_product_with(v2)
 
     @staticmethod
     def centroid(point_iter):

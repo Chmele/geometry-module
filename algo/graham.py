@@ -1,6 +1,5 @@
 from math import pi as pi
 from models import Point
-from algo.hull_common import direction
 
 
 def graham(points):
@@ -30,7 +29,7 @@ def sort_points(points, origin, min_point):
 def make_hull(steps_table, ordered):
     ans = ordered[:2]
     for p in ordered[2:]:
-        while len(ans) > 1 and direction(ans[-2], ans[-1], p) >= 0:
+        while len(ans) > 1 and Point.direction(ans[-2], ans[-1], p) >= 0:
             steps_table.append(current_step(ordered, ans, False, p))
             ans.pop()
         

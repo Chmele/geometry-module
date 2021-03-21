@@ -9,6 +9,18 @@ class Vector:
         return len(self.coords)
 
     @property
+    def x(self):
+        return self.coords[0]
+
+    @property
+    def y(self):
+        return self.coords[1]
+
+    @property
+    def z(self):
+        return self.coords[2]
+
+    @property
     def euclidean_norm(self):
         return math.sqrt(sum((i ** 2 for i in self.coords)))
 
