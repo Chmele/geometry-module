@@ -6,7 +6,7 @@ class Node:
 
     def __eq__(self, other):
         return (
-            self.data == other.data and
-            self.left == other.left and
-            self.right == other.right
+            self.data == other.data
+            and self.left == other.left
+            and self.right == other.right
         )

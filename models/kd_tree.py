@@ -1,11 +1,12 @@
 from models import Node, BinTree
 
+
 class KdTree(BinTree):
     def __init__(self, root: Node, x_range, y_range):
         super().__init__(root)
         self.x_range = x_range
         self.y_range = y_range
-    
+
     def make_tree(self, list, node: Node, vertical=True):
         med = len(list) // 2
         if med == 0:
@@ -19,9 +20,9 @@ class KdTree(BinTree):
         list_l = sorted(list[:med], key=sort_key)
         list_r = sorted(list[-med:], key=sort_key)
         left, right = list_l[med // 2], list_r[med // 2]
-    
+
         node.left = Node(left)
-        if (node.data != right):
+        if node.data != right:
             node.right = Node(right)
 
         self.make_tree(list_l, node.left, not vertical)
@@ -32,7 +33,7 @@ class KdTree(BinTree):
             left, right, coord = self.x_range[0], self.x_range[1], node.data.x
         else:
             left, right, coord = self.y_range[0], self.y_range[1], node.data.y
-        
+
         dots = []
         if self.dot_in_region(node.data):
             dots.append(node.data)
@@ -46,6 +47,8 @@ class KdTree(BinTree):
 
     def dot_in_region(self, dot):
         return (
-            self.x_range[0] <= dot.x and dot.x <= self.x_range[1] and
-            self.y_range[0] <= dot.y and dot.y <= self.y_range[1]
+            self.x_range[0] <= dot.x
+            and dot.x <= self.x_range[1]
+            and self.y_range[0] <= dot.y
+            and dot.y <= self.y_range[1]
         )
