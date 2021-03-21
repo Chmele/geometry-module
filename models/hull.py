@@ -23,8 +23,8 @@ class Hull(Polygon):
     def get_arc(self, point):
         point_cycle = cycle(self)
         u, v = self.reference_points(point)
-        arc1 = list(chain(takewhile(lambda x: not x == v, dropwhile(lambda x: not x == u, point_cycle)), (v,)))
-        arc2 = list(chain(takewhile(lambda x: not x == u, dropwhile(lambda x: not x == v, point_cycle)), (u,)))
+        arc1 = list(chain(takewhile(lambda x: x != v, dropwhile(lambda x: x != u, point_cycle)), (v,)))
+        arc2 = list(chain(takewhile(lambda x: x != u, dropwhile(lambda x: x != v, point_cycle)), (u,)))
         def key(arc):
             return Polygon(list(arc)+[point]).area
         return max((arc1, arc2), key=key)

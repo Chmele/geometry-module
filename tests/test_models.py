@@ -83,7 +83,7 @@ class TestModels(unittest.TestCase):
         p4 = Point(100, 0)
         p = Polygon((p1, p2, p3, p4))
         self.assertAlmostEqual(p.area, 10000)
-        self.assertAlmostEqual(p.surface, 10000)
+        self.assertAlmostEqual(p.area, 10000)
 
     def test_hull_sum(self):
         p1 = Point(2, 2)
