@@ -1,7 +1,7 @@
 from models.triangle import Triangle
 from models.polygon import Polygon
 import unittest
-from models import Point, Vertex, Graph, Vector
+from models import Point, Vertex, Graph, Vector, Triangle, Polygon, Hull
 import math
 
 
@@ -83,3 +83,33 @@ class TestModels(unittest.TestCase):
         p4 = Point(100, 0)
         p = Polygon((p1, p2, p3, p4))
         self.assertAlmostEqual(p.area, 10000)
+        self.assertAlmostEqual(p.surface, 10000)
+
+    def test_hull_sum(self):
+        p1 = Point(2, 2)
+        p2 = Point(2,-2)
+        p3 = Point(-2, -2)
+        p4 = Point(-2, 2)
+        r1 = Polygon((p1, p2, p3, p4))
+        p1 = Point(3, 0)
+        p2 = Point(0,-3)
+        p3 = Point(-3, 0)
+        p4 = Point(0, 3)
+        r2 = Polygon((p1, p2, p3, p4))
+        
+        h = Hull(r1) + Hull(r2)
+        self.assertEqual(h, [Point(0.0, -3.0), Point(2.0, -2.0), Point(3.0, 0.0), Point(2.0, 2.0), Point(0.0, 3.0), Point(-2.0, 2.0), Point(-3.0, 0.0), Point(-2.0, -2.0)])
+        
+        p1 = Point(2, 2)
+        p2 = Point(2, 0)
+        p3 = Point(0, 0)
+        p4 = Point(0, 2)
+        r1 = Polygon((p1, p2, p3, p4))
+        p1 = Point(-2, -2)
+        p2 = Point(-2, 0)
+        p3 = Point(0, -1)
+        p4 = Point(0, -2)
+        r2 = Polygon((p1, p2, p3, p4))
+        
+        h = Hull(r1) + Hull(r2)
+        self.assertEqual(h, [Point(-2.0, -2.0), Point(0.0, -2.0), Point(2.0, 0.0), Point(2.0, 2.0), Point(0.0, 2.0), Point(-2.0, 0.0)])
