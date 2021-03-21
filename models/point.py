@@ -85,6 +85,6 @@ class Point:
         return str(self)
 
     @staticmethod
-    def center(point_iter):
+    def centroid(point_iter):
         """returns mean of points iterable"""
         return Point(*(sum(coord) / len(coord) for coord in zip(*point_iter)))
