@@ -408,6 +408,8 @@ class TestAlgorithms(unittest.TestCase):
         graph.add_edge(v2, v4, 1)
         graph.add_edge(v3, v4, 1)
 
+        graph1 = copy.deepcopy(graph)
+
         def test_structure(graph: OrientedGraph):
 
             weight_table_test = createStructure(graph)
@@ -494,5 +496,5 @@ class TestAlgorithms(unittest.TestCase):
         weight_table_test = test_structure(graph)
         test_balancing(weight_table_test)
         test_creating_chains(weight_table_test)
-        test_find_dot(graph, point)
+        test_find_dot(graph1, point)
                 
