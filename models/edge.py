@@ -17,7 +17,7 @@ class OrientedEdge(Edge):
         super().__init__(v1, v2)
 
     def __hash__(self):
-        return super().__hash__()
+        return super().__hash__() + hash(self.weight)
 
     def __eq__(self, other: Edge):
         return (self.v1, self.v2) == (other.v1, other.v2)
