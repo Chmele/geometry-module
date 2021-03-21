@@ -15,7 +15,7 @@ def jarvis(points):
         if lm == ind:
             break
         ans.append(points[nxt])
-    
+
     return ans
 
 

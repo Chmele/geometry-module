@@ -6,7 +6,7 @@ class KdTree(BinTree):
         super().__init__(root)
         self.x_range = x_range
         self.y_range = y_range
-    
+
     def make_tree(self, points, node: Node, vertical=True):
         med = len(points) // 2
         if med == 0:
