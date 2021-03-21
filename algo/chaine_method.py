@@ -40,7 +40,7 @@ def createStructure(graph: OrientedGraph) -> OrderedDict:
 
         vertex_data["VIN"] = VIN
         vertex_data["VOUT"] = VOUT
-        
+
         if not VIN:
             vertex_data["WIN"] = 0
         else:
@@ -73,8 +73,16 @@ def sort_VIN(edges: List[Edge]):
         else:
             as_origin = edge
 
-    less_then_end.sort(key=lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v2.point.x - edge.v1.point.x))
-    greater_then_end.sort(key=lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v1.point.x - edge.v2.point.x), reverse=True)
+    less_then_end.sort(
+        key=lambda edge: (edge.v2.point.y - edge.v1.point.y)
+        / (edge.v2.point.x - edge.v1.point.x)
+    )
+
+    greater_then_end.sort(
+        key=lambda edge: (edge.v2.point.y - edge.v1.point.y)
+        / (edge.v1.point.x - edge.v2.point.x),
+        reverse=True,
+    )
 
     if as_origin is not None:
         less_then_end.append(as_origin)
@@ -104,8 +112,15 @@ def sort_VOUT(edges: List[Edge]):
         else:
             as_origin = edge
 
-    less_then_origin.sort(key=lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v1.point.x - edge.v2.point.x))
-    greater_then_origin.sort(key=lambda edge: (edge.v2.point.y - edge.v1.point.y)/(edge.v2.point.x - edge.v1.point.x), reverse=True)
+    less_then_origin.sort(
+        key=lambda edge: (edge.v2.point.y - edge.v1.point.y)
+        / (edge.v1.point.x - edge.v2.point.x)
+    )
+    greater_then_origin.sort(
+        key=lambda edge: (edge.v2.point.y - edge.v1.point.y)
+        / (edge.v2.point.x - edge.v1.point.x),
+        reverse=True,
+    )
 
     if as_origin is not None:
         less_then_origin.append(as_origin)
@@ -162,8 +177,8 @@ def balance(weightTable: OrderedDict):
 
 def create_chains(weightTable: OrderedDict):
     """
-        Creating chains from the start of
-        the graph to the end point of the graph
+    Creating chains from the start of
+    the graph to the end point of the graph
     """
 
     chainList = list()
