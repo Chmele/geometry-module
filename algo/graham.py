@@ -4,7 +4,7 @@ from algo.hull_common import direction
 
 
 def graham(points):
-    origin = Point(*[sum(x)/len(x) for x in zip(*[y.coords for y in points])])
+    origin = Point.centroid(points)
     min_point = min(points, key=lambda p: tuple(reversed(p.coords)))
     ordered = sort_points(points, origin, min_point)
     yield ordered
