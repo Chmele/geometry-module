@@ -1,5 +1,4 @@
-from models.triangle import Triangle
-from models import Point, Vector
+from models import Point, Vector, Triangle
 from functools import reduce
 import math
 
@@ -17,6 +16,11 @@ class Polygon:
 
     def contains_point(self, point):
         pairs = self.point_pairs
+    def contains_point(self, point):
+        def cyclic_offset(li, n):
+            return li[-n:] + li[:-n]
+
+        pairs = zip(self.points, cyclic_offset(self.points, 1))
 
         def angle(center, p1, p2):
             v1 = Vector.from_two_points(p1, center)
