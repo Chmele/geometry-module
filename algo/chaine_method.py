@@ -14,7 +14,7 @@ def createStructure(graph: OrientedGraph) -> OrderedDict:
     """
     weight_table: OrderedDict = OrderedDict()
     
-    for vertex in graph._get_sorted_by_y_verticies():
+    for vertex in graph.get_sorted_by_y_verticies():
 
         vertex_data = dict()
         VIN = list()
@@ -194,4 +194,4 @@ def findDot(graph: OrientedGraph, point: Point) -> Tuple:
         root = NodeWithParent(data = chainList[len(chainList) // 2])
         tree = BinTreeChains(root)
         tree.make_tree(chainList, root)
-        yield tree.search_dot(point)
+        return tree.search_dot(point)
