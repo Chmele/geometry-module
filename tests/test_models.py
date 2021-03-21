@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 from models.triangle import Triangle
 from models.polygon import Polygon
->>>>>>> main
 import unittest
 from models import Point, Vertex, Graph, Vector, Triangle, Polygon, Hull
 import math
@@ -54,39 +51,39 @@ class TestModels(unittest.TestCase):
         self.assertEqual(p.contains_point(p0), True)
         self.assertNotEqual(p.contains_point(pn), True)
     
-    def test_point_center(self):
+    def test_point_centroid(self):
         p1 = Point(1, 2, 3)
         p2 = Point(1, 5, 6)
         p3 = Point(1, 2, 3)
-        self.assertEqual(Point.center((p1, p2, p3)), Point(1, 3, 4))
+        self.assertEqual(Point.centroid((p1, p2, p3)), Point(1, 3, 4))
 
         p1 = Point(1, 2, 3)
         p2 = Point(1, 5, 6)
         p3 = Point(1, 2, 3)
         p4 = Point(1, 2, 3)
-        self.assertEqual(Point.center((p1, p2, p3, p4)), Point(1, 2.75, 3.75))
+        self.assertEqual(Point.centroid((p1, p2, p3, p4)), Point(1, 2.75, 3.75))
 
-    def test_triangle_surface(self):
+    def test_triangle_area(self):
         p1 = Point(0, 1)
         p2 = Point(0, 0)
         p3 = Point(1, 0)
         t = Triangle(p1, p2, p3)
-        self.assertAlmostEqual(t.surface, 0.5)
+        self.assertAlmostEqual(t.area, 0.5)
 
         p1 = Point(-100, 0)
         p2 = Point(0, 100)
         p3 = Point(100, 0)
         t = Triangle(p1, p2, p3)
-        self.assertAlmostEqual(t.surface, 10000)
+        self.assertAlmostEqual(t.area, 10000)
 
-    def test_polygon_surface(self):
+    def test_polygon_area(self):
         p1 = Point(0, 0)
         p2 = Point(0, 100)
         p3 = Point(100, 100)
         p4 = Point(100, 0)
         p = Polygon((p1, p2, p3, p4))
-        self.assertAlmostEqual(p.surface, 10000)
-<<<<<<< HEAD
+        self.assertAlmostEqual(p.area, 10000)
+        self.assertAlmostEqual(p.area, 10000)
 
     def test_hull_sum(self):
         p1 = Point(2, 2)
@@ -116,5 +113,3 @@ class TestModels(unittest.TestCase):
         
         h = Hull(r1) + Hull(r2)
         self.assertEqual(h, [Point(-2.0, -2.0), Point(0.0, -2.0), Point(2.0, 0.0), Point(2.0, 2.0), Point(0.0, 2.0), Point(-2.0, 0.0)])
-=======
->>>>>>> main
