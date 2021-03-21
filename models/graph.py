@@ -27,19 +27,17 @@ class OrientedGraph(Graph):
         if (v1 in self.vertices and v2 in self.vertices):
             self.edges.add(OrientedEdge(v1, v2, weight))
 
-    def graph_as_dict(self) -> dict:
-        return { edge.v1 : (edge.v2, edge.weight) for edge in self.edges}
-
-    def _get_sorted_by_y_verticies(self) -> List:
+    def get_sorted_by_y_verticies(self) -> List:
         return list(sorted(self.vertices, key = lambda x: x.point.y))
     
     def isRegularGraph(self) -> bool:
-        y_sorted_verticies = self._get_sorted_by_y_verticies()
-        y_sorted_verticies = y_sorted_verticies[1:-2]
-        directions = self._graph_as_dict()
+        y_sorted_verticies = self.get_sorted_by_y_verticies()
+        y_sorted_verticies = y_sorted_verticies[1:-1]
+        origin_vertecies = [ edge.v1 for edge in self.edges ]
+        end_vertecies = [ edge.v2 for edge in self.edges ]
         for vertex in y_sorted_verticies:
-            if vertex not in directions.keys():
+            if vertex not in origin_vertecies:
                 return False
-            if vertex not in [vertex for vertex, weight in list(directions.values())]:
+            if vertex not in end_vertecies:
                 return False
         return True
