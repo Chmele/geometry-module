@@ -1,3 +1,5 @@
+from models.triangle import Triangle
+from models.polygon import Polygon
 import unittest
 from models import Point, Vertex, Graph, Vector, Triangle, Polygon, Hull
 import math
@@ -49,7 +51,7 @@ class TestModels(unittest.TestCase):
         pn = Point(1.1, 1)
         self.assertEqual(p.contains_point(p0), True)
         self.assertNotEqual(p.contains_point(pn), True)
-
+    
     def test_point_centroid(self):
         p1 = Point(1, 2, 3)
         p2 = Point(1, 5, 6)
@@ -81,6 +83,7 @@ class TestModels(unittest.TestCase):
         p3 = Point(100, 100)
         p4 = Point(100, 0)
         p = Polygon((p1, p2, p3, p4))
+        self.assertAlmostEqual(p.area, 10000)
         self.assertAlmostEqual(p.area, 10000)
 
     def test_hull_sum(self):
@@ -122,14 +125,4 @@ class TestModels(unittest.TestCase):
         r2 = Polygon((p1, p2, p3, p4))
 
         h = Hull(r1) + Hull(r2)
-        self.assertEqual(
-            h,
-            [
-                Point(-2.0, -2.0),
-                Point(0.0, -2.0),
-                Point(2.0, 0.0),
-                Point(2.0, 2.0),
-                Point(0.0, 2.0),
-                Point(-2.0, 0.0),
-            ],
-        )
+        self.assertEqual(h, [Point(-2.0, -2.0), Point(0.0, -2.0), Point(2.0, 0.0), Point(2.0, 2.0), Point(0.0, 2.0), Point(-2.0, 0.0)])
