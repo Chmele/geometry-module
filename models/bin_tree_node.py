@@ -10,8 +10,3 @@ class Node:
             and self.left == other.left
             and self.right == other.right
         )
-
-class NodeWithParent(Node):
-    def __init__(self, data, parent = None):
-        self.parent = parent
-        super().__init__(data)
