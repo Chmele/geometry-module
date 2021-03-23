@@ -1,4 +1,4 @@
-from models import Edge, Point, NodeWithParent, BinTreeChains, OrientedGraph
+from models import Edge, Point, NodeWithParent, ChainsBinTree, OrientedGraph
 from typing import List, Tuple, OrderedDict
 from collections import OrderedDict
 

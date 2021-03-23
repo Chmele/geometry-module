@@ -21,7 +21,7 @@ class BinTree:
             self.print_tree(root.right)
 
 
-class BinTreeChains(BinTree):
+class ChainsBinTree(BinTree):
     def __init__(self, root: Node):
         super().__init__(root)
 
