@@ -30,7 +30,7 @@ class OrientedGraph(Graph):
     def get_sorted_by_y_verticies(self) -> List:
         return list(sorted(self.vertices, key = lambda x: x.point.y))
     
-    def isRegularGraph(self) -> bool:
+    def is_regular(self) -> bool:
         y_sorted_verticies = self.get_sorted_by_y_verticies()
         y_sorted_verticies = y_sorted_verticies[1:-1]
         origin_vertecies = [ edge.v1 for edge in self.edges ]
