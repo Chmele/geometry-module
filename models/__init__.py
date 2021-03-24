@@ -1,3 +1,5 @@
+"""Package with geometric models using in algorithms."""
+
 from models.vector import Vector
 from models.point import Point
 from models.vertex import Vertex
@@ -11,4 +13,17 @@ from models.triangle import Triangle
 from models.polygon import Polygon
 from models.hull import Hull
 
-__all__ = ['Vector', 'Point', 'Vertex', 'Edge', 'Graph', 'Node', 'BinTree', 'KdTree', 'Line2D', 'Triangle', 'Polygon', 'Hull']
+__all__ = [
+    "Vector",
+    "Point",
+    "Vertex",
+    "Edge",
+    "Graph",
+    "Node",
+    "BinTree",
+    "KdTree",
+    "Line2D",
+    "Triangle",
+    "Polygon",
+    "Hull",
+]

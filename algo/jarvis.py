@@ -9,7 +9,7 @@ def jarvis(points):
         nxt = (lm + 1) % length
         for i in range(length):
             if i != lm and direction_correct(points, lm, i, nxt):
-                    nxt = i
+                nxt = i
         lm = nxt
 
         if lm == ind:

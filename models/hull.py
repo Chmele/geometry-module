@@ -5,6 +5,7 @@ from itertools import cycle, dropwhile, takewhile, chain
 
 class Hull(Polygon):
     def __add__(self, other):
+        """Merge two hulls in one."""
         p1, p2, p3 = self.points[:3]
         centroid = Point.centroid((p1, p2, p3))
         if other.contains_point(centroid):

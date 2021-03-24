@@ -14,7 +14,7 @@ class Triangle:
 
     @property
     def area(self):
-        """Heron`s formula"""
+        """Heron`s formula."""
         p = sum(self.sides) / 2
         A, B, C = self.sides
         return math.sqrt(p * (p - A) * (p - B) * (p - C))

@@ -4,7 +4,7 @@ import math
 
 
 class TestModels(unittest.TestCase):
-    """Test class for basic entities"""
+    """Test class for basic entities."""
 
     def test_point_creation(self):
         p1 = Point(1, 2)

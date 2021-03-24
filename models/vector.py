@@ -3,9 +3,11 @@ import math
 
 class Vector:
     def __init__(self, coords):
+        """Make vector from coords iterable."""
         self.coords = coords
 
     def __len__(self):
+        """Dimension of vector instance."""
         return len(self.coords)
 
     @property
@@ -25,6 +27,7 @@ class Vector:
         return math.sqrt(sum((i ** 2 for i in self.coords)))
 
     def __mul__(self, other):
+        """Scalar vector multiplication."""
         return sum((i * j for i, j in zip(self.coords, other.coords)))
 
     def __getitem__(self, key):

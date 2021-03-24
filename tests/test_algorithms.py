@@ -10,7 +10,7 @@ import math
 
 
 class TestAlgorithms(unittest.TestCase):
-    """Algorithm tests"""
+    """Algorithm tests."""
 
     def test_stripe(self):
         p1 = Vertex(Point(7, 0))

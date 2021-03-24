@@ -3,7 +3,7 @@ import functools as f
 
 
 def stripe(g: Graph, dot: Point):
-    """Stripe method for dot localization"""
+    """Stripe method for dot localization."""
     separators = sorted(set(map(lambda x: x[1], g.vertices)))
     separators = [float("-inf")] + separators + [float("inf")]
     stripes = []
@@ -31,7 +31,7 @@ def sorted_edges_in_stripe(edges, stripe):
 
 
 def edge_in_stripe(self, stripe):
-    """True if edge y projection overlaps stripe y region"""
+    """True if edge y projection overlaps stripe y region."""
     return (
         self.v1.point.y <= stripe[0]
         and self.v2.point.y >= stripe[1]
@@ -55,7 +55,7 @@ def position_dot_edge(dot, edge):
 
 
 def first_stage(stripes, g: Graph):
-    """Returns list of tuples (lower, upper) bounds for each stripes"""
+    """Return list of tuples (lower, upper) bounds for each stripes."""
     ans = {}
     for stripe in stripes:
         ans.update({stripe: list(filter(lambda x: edge_in_stripe(x, stripe), g.edges))})
@@ -63,12 +63,12 @@ def first_stage(stripes, g: Graph):
 
 
 def dot_in_stripe(dot, stripe):
-    """True if dot.y is in horizontal stripe"""
+    """True if dot.y is in horizontal stripe."""
     return stripe[0] < dot.y <= stripe[1]
 
 
 def find_stripe(stripes, dot):
-    """Returns stripe in which dot is located from stripe list"""
+    """Return stripe in which dot is located from stripe list."""
     return filter(lambda x: dot_in_stripe(dot, x), stripes).__next__()
 
 
@@ -78,7 +78,7 @@ def dot_between_edges(dot, edges):
 
 
 def check_edges(edges, dot):
-    """Return pair of edges, if dot is between them"""
+    """Return pair of edges, if dot is between them."""
     tuples = []
     for edge in range(len(edges) - 1):
         tuples.append((edges[edge], edges[edge + 1]))
