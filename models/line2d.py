@@ -2,7 +2,7 @@ from models import Point
 
 
 class Line2D:
-    """A 2D line represented by the equation Ax + By + C = 0"""
+    """A 2D line represented by the equation Ax + By + C = 0."""
 
     def __init__(self, p1: Point, p2: Point):
         """Constuct line by two points."""

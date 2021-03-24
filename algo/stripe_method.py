@@ -41,8 +41,8 @@ def edge_in_stripe(self, stripe):
 
 
 def position_dot_edge(dot, edge):
-    """
-    Vector magic...
+    """Vector magic...
+
     * / -> positive(dot in left)
     / * -> negative(dor in right)
     * is on / -> 0
@@ -73,7 +73,7 @@ def find_stripe(stripes, dot):
 
 
 def dot_between_edges(dot, edges):
-    """True if dot is in left of one edge and right of another"""
+    """True if dot is in left of one edge and right of another."""
     return position_dot_edge(dot, edges[0]) * position_dot_edge(dot, edges[1]) < 0
 
 

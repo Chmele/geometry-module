@@ -27,7 +27,7 @@ class Hull(Polygon):
         u, v = self.reference_points(point)
 
         def arc(start, end):
-            """returns arc of point_cycle with start and end exclusively"""
+            """Return arc of point_cycle with start and end exclusively."""
             return list(
                 chain(
                     takewhile(

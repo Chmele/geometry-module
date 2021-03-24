@@ -44,5 +44,5 @@ def make_subset(points, left, right, sort_key):
 
 
 def left_points(points, p1, p2):
-    """Points at the left of vector p1->p2 and p1, p2"""
+    """Points at the left of vector p1->p2 and p1, p2."""
     return [p1] + list(filter(lambda p: Point.direction(p1, p2, p) < 0, points)) + [p2]

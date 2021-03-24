@@ -3,6 +3,7 @@ import math
 
 class Triangle:
     def __init__(self, A, B, C):
+        """Make triangle from 3 objects."""
         self.A, self.B, self.C = A, B, C
 
     @property

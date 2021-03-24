@@ -6,11 +6,11 @@ from models import Vector
 
 class Point:
     def __init__(self, *args):
-        """Make tuple of args"""
+        """Make tuple of args."""
         self.coords = tuple(map(float, args))
 
     def dominating(self, other):
-        """True if each self coordinate is bigger than other"""
+        """True if each self coordinate is bigger than other."""
         return reduce(
             lambda a, b: a and b[0] >= b[1], zip(self.coords, other.coords), True
         )
@@ -80,6 +80,7 @@ class Point:
         return math.atan2(self.y - other.y, self.x - other.x)
 
     def __hash__(self):
+        """Hash all the point representation"""
         return hash(self.coords)
 
     def __repr__(self) -> str:
@@ -88,8 +89,7 @@ class Point:
 
     @staticmethod
     def direction(point1, point2, point3):
-        """
-        Numeric description of point positions.
+        """Numeric description of point positions.
 
         < 0 if point3 is at the left of vector point1->point2;
         > 0 if point3 is at the right of vector point1->point2;
