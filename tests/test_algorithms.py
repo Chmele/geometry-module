@@ -1,13 +1,13 @@
 import unittest
 from models import Point, Vertex, Graph, Edge, BinTree, KdTree, Node, OrientedGraph, OrientedEdge, NodeWithParent
 from collections import OrderedDict
-from algo import stripe_method as s
-from algo import kd_tree_method as kd
+from algo.stripe_method import stripe
+from algo.kd_tree_method import kd_tree
 from algo.jarvis import jarvis
 from algo.graham import graham
 from algo.quickhull import quickhull
 from algo.loci import Loci
-from algo.chaine_method import createStructure, balance, create_chains, findDot
+from algo.chain_method import *
 import math
 import copy
 
@@ -378,7 +378,7 @@ class TestAlgorithms(unittest.TestCase):
         res = l.get_points_in_rect(((0.5, 2.5), (0.5, 2.5)))
         self.assertEqual(res, 2)
 
-    def test_chain_methode(self):
+    def test_chain_method(self):
         graph = OrientedGraph()
         point = Point(4, 5)
         v1 = Vertex(Point(4, 2))
@@ -406,14 +406,13 @@ class TestAlgorithms(unittest.TestCase):
         graph1 = copy.deepcopy(graph)
 
         def test_structure(graph: OrientedGraph):
-
-            weight_table_test = createStructure(graph)
+            weight_table_test = make_weight_table(graph)
 
             weight_table = {
-                v1: {"VIN": [], "VOUT": [e1, e2], "WIN": 0, "WOUT": 2},
-                v2: {"VIN": [e1], "VOUT": [e4, e3], "WIN": 1, "WOUT": 2},
-                v3: {"VIN": [e3, e2], "VOUT": [e5], "WIN": 2, "WOUT": 1},
-                v4: {"VIN": [e4, e5], "VOUT": [], "WIN": 2, "WOUT": 0}
+                v1: {"vin": [], "vout": [e1, e2], "win": 0, "wout": 2},
+                v2: {"vin": [e1], "vout": [e4, e3], "win": 1, "wout": 2},
+                v3: {"vin": [e3, e2], "vout": [e5], "win": 2, "wout": 1},
+                v4: {"vin": [e4, e5], "vout": [], "win": 2, "wout": 0}
             }
 
             weight_table_true = OrderedDict(weight_table)
@@ -423,17 +422,16 @@ class TestAlgorithms(unittest.TestCase):
             return weight_table_test
 
         def test_balancing(weight_table_test: OrderedDict):
-
             balance(weight_table_test)
             e1_TRUE = copy.deepcopy(e1)
             e1_TRUE.weight = 2
             e5_TRUE = copy.deepcopy(e5)
             e5_TRUE.weight = 2
             weight_table_true = {
-                v1: {"VIN": [], "VOUT": [e1_TRUE, e2], "WIN": 0, "WOUT": 3},
-                v2: {"VIN": [e1_TRUE], "VOUT": [e4, e3], "WIN": 2, "WOUT": 2},
-                v3: {"VIN": [e3, e2], "VOUT": [e5_TRUE], "WIN": 2, "WOUT": 2},
-                v4: {"VIN": [e4, e5_TRUE], "VOUT": [], "WIN": 3, "WOUT": 0}
+                v1: {"vin": [], "vout": [e1_TRUE, e2], "win": 0, "wout": 3},
+                v2: {"vin": [e1_TRUE], "vout": [e4, e3], "win": 2, "wout": 2},
+                v3: {"vin": [e3, e2], "vout": [e5_TRUE], "win": 2, "wout": 2},
+                v4: {"vin": [e4, e5_TRUE], "vout": [], "win": 3, "wout": 0}
             }
 
             weight_table_true = OrderedDict(weight_table_true)
@@ -442,7 +440,6 @@ class TestAlgorithms(unittest.TestCase):
 
         def test_creating_chains(weight_table: OrderedDict):
             chain_list_test = list()
-
             chain_list_test = create_chains(weight_table)
             
             e1_TRUE = copy.deepcopy(e1)
@@ -467,8 +464,8 @@ class TestAlgorithms(unittest.TestCase):
             return chain_list_test
 
         def test_find_dot(graph: OrientedGraph, point: Point):
-
-            chain_test = findDot(graph, point)
+            gen = chain_method(graph, point)
+            chain_test = next(next(next(next(next(next(gen))))))
         
             e1_TRUE = copy.deepcopy(e1)
             e1_TRUE.weight = 0

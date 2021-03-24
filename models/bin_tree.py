@@ -1,5 +1,4 @@
-from models import Node, Point, NodeWithParent, Edge
-from typing import Tuple, List
+from models import Node, Point, NodeWithParent
 
 
 class BinTree:
@@ -22,12 +21,8 @@ class BinTree:
 
 
 class ChainsBinTree(BinTree):
-    def __init__(self, root: Node):
-        super().__init__(root)
-
-    def make_tree(self, list: List, node: Node):
+    def make_tree(self, list, node):
         mid = len(list) // 2
-
         if mid == 0:
             return
 
@@ -42,26 +37,22 @@ class ChainsBinTree(BinTree):
         self.make_tree(list_l, node.left)
         self.make_tree(list_r, node.right)
 
-    def _point_in_edge(self, edge: Edge, point):
-        if edge.v1[1] <= point.y and edge.v2[1] >= point.y:
-            return True
-        else:
-            return False
+    def _point_in_edge(edge, point):
+        return edge.v1[1] <= point.y and edge.v2[1] >= point.y
 
-    def _location_against_edge(self, edge: Edge, point: Point):
-        a = (point.x - edge.v1.point.x) * (edge.v2.point.y - edge.v1.point.y)
-        b = (point.y - edge.v1.point.y) * (edge.v2.point.x - edge.v1.point.x)
-        return a - b
+    def _location_against_edge(point, edge):
+        return Point.direction(edge.v1.point, edge.v2.point, point)
 
-    def search_dot(self, point: Point) -> Tuple:
+    def search_point(self, point):
+        '''Returns a pair of chains the point is between'''
         current_node = self.root
         location = 0
         right_parent = None
         left_parent = None
 
-        while current_node is not None:
+        while current_node:
             edge = list(
-                filter(lambda edge: self._point_in_edge(edge, point), current_node.data)
+                filter(lambda e: self._point_in_edge(e, point), current_node.data)
             )[0]
             location = self._location_against_edge(edge, point)
 
