@@ -14,22 +14,24 @@ class Graph:
     def add_vertex(self, v: Vertex):
         self.vertices.add(v)
 
-    def add_edge(self, v1: Vertex, v2: Vertex):
-        edge = Edge(v1, v2)
-        if (v1 in self.vertices and v2 in self.vertices):
-            self.edges.add(Edge(v1, v2))
+    def add_edge(self, v1: Vertex, v2: Vertex, weight=0):
+        e1 = Edge(v1, v2, weight)
+        e2 = Edge(v2, v1)
+        if (v1 in self.vertices and v2 in self.vertices
+            and e1 not in self.edges and e2 not in self.edges):
+            self.edges.add(e1)
 
 
 class OrientedGraph(Graph):
-    def add_edge(self, v1: Vertex, v2: Vertex, weight: int):
+    def add_edge(self, v1: Vertex, v2: Vertex, weight=0):
         if (v1 in self.vertices and v2 in self.vertices):
             self.edges.add(OrientedEdge(v1, v2, weight))
-    
+
     def is_regular(self):
         '''
             Checks whether a graph is regular, i.e. each of its vertices
             has both incoming and outcoming edge(s),
-            except for the starting (no incoming) and ending (no outcoming). 
+            except for the starting (no incoming) and ending (no outcoming).
         '''
         sorted_vertices = self.sorted_vertices(sort_key=lambda v: v.point.y)[1:-1]
         regular_vertices = [e.v1 for e in self.edges] + [e.v2 for e in self.edges]

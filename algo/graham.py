@@ -32,7 +32,7 @@ def make_hull(steps_table, ordered):
         while len(ans) > 1 and Point.direction(ans[-2], ans[-1], p) >= 0:
             steps_table.append(current_step(ordered, ans, False, p))
             ans.pop()
-        
+
         if len(ans) > 1:
             steps_table.append(current_step(ordered, ans, True, p))
         ans.append(p)

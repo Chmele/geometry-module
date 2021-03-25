@@ -79,7 +79,7 @@ class Point:
     def polar_angle_with(self, other):
         '''Polar angle between self and other with other as origin'''
         return math.atan2(self.y - other.y, self.x - other.x)
-    
+
     def ccw_polar_angle_with(self, other):
         '''Non-negative polar angle between self and other with other as origin'''
         angle = self.polar_angle_with(other)

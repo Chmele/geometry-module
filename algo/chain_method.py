@@ -51,8 +51,8 @@ def make_weight_table(graph: OrientedGraph):
         weight_v_edges(vertex_data, vin, "win")
         weight_v_edges(vertex_data, vout, "wout")
 
-        weight_table[vertex] = vertex_data    
-    
+        weight_table[vertex] = vertex_data
+
     return weight_table
 
 
