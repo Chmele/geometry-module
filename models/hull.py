@@ -16,16 +16,14 @@ class Hull(Polygon):
 
     def reference_points(self, point):
         v = Vector((0, 1))
-
-        def key(end_point):
+        def key (end_point):
             return v.signed_angle(Vector.from_two_points(point, end_point))
-
         return (min(self, key=key), max(self, key=key))
 
     def get_arc(self, point):
         point_cycle = cycle(self)
         u, v = self.reference_points(point)
-
+        
         def arc(start, end):
             """Return arc of point_cycle with start and end exclusively."""
             return list(
@@ -38,8 +36,8 @@ class Hull(Polygon):
             )
 
         arc1, arc2 = arc(u, v), arc(v, u)
-
+        
         def key(arc):
-            return Polygon(list(arc) + [point]).area
-
+            return Polygon(list(arc)+[point]).area
+        
         return max((arc1, arc2), key=key)

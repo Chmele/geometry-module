@@ -10,7 +10,7 @@ class Point:
         self.coords = tuple(map(float, args))
 
     def dominating(self, other):
-        """True if each self coordinate is bigger than other."""
+        '''True if each self coordinate is bigger than other'''
         return reduce(
             lambda a, b: a and b[0] >= b[1], zip(self.coords, other.coords), True
         )
@@ -56,18 +56,19 @@ class Point:
         return Point(*list(map(sub, self.coords, other.coords)))
 
     def dist_to_point(self, other):
-        """Euclidean distance to point."""
+        '''Euclidean distance to point'''
         s = sum([(a - b) ** 2 for a, b in zip(self.coords, other.coords)])
         return math.sqrt(s)
 
     def dist_to_line(self, line):
-        """Euclidean distance to the 2D line."""
-        return abs(line.A * self.x + line.B * self.y + line.C) / math.sqrt(
-            line.A ** 2 + line.B ** 2
+        '''Euclidean distance to the 2D line'''
+        return (
+            abs(line.A * self.x + line.B * self.y + line.C) /
+            math.sqrt(line.A ** 2 + line.B ** 2)
         )
 
     def angle_with(self, point1, point2):
-        """Angle point1-self-point2 in [-pi, pi]."""
+        '''Angle point1-self-point2 in [-pi, pi]'''
         v1 = Vector.from_two_points(self, point1)
         v2 = Vector.from_two_points(self, point2)
         v1.normalize()
@@ -76,30 +77,36 @@ class Point:
         return math.acos(v1 * v2 / (v1.euclidean_norm * v2.euclidean_norm))
 
     def polar_angle_with(self, other):
-        """Polar angle between self and other with self as origin."""
+        '''Polar angle between self and other with other as origin'''
         return math.atan2(self.y - other.y, self.x - other.x)
+    
+    def ccw_polar_angle_with(self, other):
+        '''Non-negative polar angle between self and other with other as origin'''
+        angle = self.polar_angle_with(other)
+        return angle if angle >= 0 else 2 * math.pi + angle
+
 
     def __hash__(self):
-        """Hash all the point representation"""
+        '''Hash all the point representation'''
         return hash(self.coords)
 
-    def __repr__(self) -> str:
-        """Representation for debugging."""
+    def __repr__(self):
+        '''Representation for debugging.'''
         return str(self)
 
     @staticmethod
     def direction(point1, point2, point3):
-        """Numeric description of point positions.
+        '''Numeric description of point positions.
 
         < 0 if point3 is at the left of vector point1->point2;
         > 0 if point3 is at the right of vector point1->point2;
         = 0 if point3 is at the vector point1->point2.
-        """
+        '''
         v1 = Vector.from_two_points(point1, point3)
         v2 = Vector.from_two_points(point1, point2)
         return v1.cross_product_with(v2)
 
     @staticmethod
     def centroid(point_iter):
-        """Coordinate-wise mean of points iterable."""
+        '''Coordinate-wise mean of points iterable'''
         return Point(*(sum(coord) / len(coord) for coord in zip(*point_iter)))

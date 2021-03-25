@@ -1,12 +1,15 @@
 import unittest
-from models import Point, Vertex, Graph, Edge, BinTree, KdTree, Node
+from models import Point, Vertex, Graph, Edge, BinTree, KdTree, Node, OrientedGraph, OrientedEdge, NodeWithParent
+from collections import OrderedDict
 from algo.stripe_method import stripe
 from algo.kd_tree_method import kd_tree
 from algo.jarvis import jarvis
 from algo.graham import graham
 from algo.quickhull import quickhull
 from algo.loci import Loci
+from algo.chain_method import *
 import math
+import copy
 
 
 class TestAlgorithms(unittest.TestCase):
@@ -374,3 +377,80 @@ class TestAlgorithms(unittest.TestCase):
         l.append_points(p1, p2, p3)
         res = l.get_points_in_rect(((0.5, 2.5), (0.5, 2.5)))
         self.assertEqual(res, 2)
+
+    def test_chain_method(self):
+        graph = OrientedGraph()
+        point = Point(4, 5)
+        v1 = Vertex(Point(4, 2))
+        v2 = Vertex(Point(2, 4))
+        v3 = Vertex(Point(6, 5))
+        v4 = Vertex(Point(5, 7))
+        
+        e1 = OrientedEdge(v1, v2, 1)
+        e2 = OrientedEdge(v1, v3, 1)
+        e3 = OrientedEdge(v2, v3, 1)
+        e4 = OrientedEdge(v2, v4, 1)
+        e5 = OrientedEdge(v3, v4, 1)
+
+        graph.add_vertex(v1)
+        graph.add_vertex(v2)
+        graph.add_vertex(v3)
+        graph.add_vertex(v4)
+
+        graph.add_edge(v1, v2, 1)
+        graph.add_edge(v1, v3, 1)
+        graph.add_edge(v2, v3, 1)
+        graph.add_edge(v2, v4, 1)
+        graph.add_edge(v3, v4, 1)
+
+        ordered = [v1, v2, v3, v4]
+        
+        weight_table = OrderedDict({
+            v1: {"vin": [], "vout": [e1, e2], "win": 0, "wout": 2},
+            v2: {"vin": [e1], "vout": [e4, e3], "win": 1, "wout": 2},
+            v3: {"vin": [e3, e2], "vout": [e5], "win": 2, "wout": 1},
+            v4: {"vin": [e4, e5], "vout": [], "win": 2, "wout": 0}
+        })
+        
+        e1_balanced = copy.deepcopy(e1)
+        e1_balanced.weight = 2
+        e5_balanced = copy.deepcopy(e5)
+        e5_balanced.weight = 2
+        weight_table_balanced = {
+            v1: {"vin": [], "vout": [e1_balanced, e2], "win": 0, "wout": 3},
+            v2: {"vin": [e1_balanced], "vout": [e4, e3], "win": 2, "wout": 2},
+            v3: {"vin": [e3, e2], "vout": [e5_balanced], "win": 2, "wout": 2},
+            v4: {"vin": [e4, e5_balanced], "vout": [], "win": 3, "wout": 0}
+        }
+        
+        e1_new = copy.deepcopy(e1)
+        e1_new.weight = 0
+        e2_new = copy.deepcopy(e2)
+        e2_new.weight = 0
+        e3_new = copy.deepcopy(e3)
+        e3_new.weight = 0
+        e4_new = copy.deepcopy(e4)
+        e4_new.weight = 0
+        e5_new = copy.deepcopy(e5)
+        e5_new.weight = 0
+
+        chains = [
+            [e1_new, e4_new],
+            [e1_new, e3_new, e5_new],
+            [e2_new, e5_new]
+        ]
+
+        root = NodeWithParent(data=chains[1])
+        tree = ChainsBinTree(root)
+        tree.root.left = NodeWithParent(data=chains[0], parent=root)
+        tree.root.right = NodeWithParent(data=chains[2], parent=root)
+        
+        point_between = (chains[0], chains[1])
+
+        ans = chain_method(graph, point)
+        self.assertEqual(ordered, next(ans))
+        self.assertEqual(weight_table, next(ans))
+        self.assertEqual(weight_table_balanced, next(ans))
+        self.assertEqual(chains, next(ans))
+        self.assertEqual(tree, next(ans))
+        self.assertEqual(point_between, next(ans))
