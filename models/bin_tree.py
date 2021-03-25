@@ -37,24 +37,24 @@ class ChainsBinTree(BinTree):
         self.make_tree(list_l, node.left)
         self.make_tree(list_r, node.right)
 
-    def _point_in_edge(self, edge, point):
+    @staticmethod
+    def _point_in_edge(edge, point):
         return edge.v1[1] <= point.y and edge.v2[1] >= point.y
 
-    def _location_against_edge(self, point, edge):
+    @staticmethod
+    def _location_against_edge(point, edge):
         return Point.direction(edge.v1.point, edge.v2.point, point)
 
     def search_point(self, point):
         '''Returns a pair of chains the point is between'''
         current_node = self.root
-        location = 0
-        right_parent = None
-        left_parent = None
+        left_parent, right_parent = None, None
 
         while current_node:
             edge = list(
-                filter(lambda e: self._point_in_edge(e, point), current_node.data)
+                filter(lambda e: ChainsBinTree._point_in_edge(e, point), current_node.data)
             )[0]
-            location = self._location_against_edge(point, edge)
+            location = ChainsBinTree._location_against_edge(point, edge)
 
             if location > 0:
                 if current_node.right is not None:
