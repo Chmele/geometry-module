@@ -37,10 +37,10 @@ class ChainsBinTree(BinTree):
         self.make_tree(list_l, node.left)
         self.make_tree(list_r, node.right)
 
-    def _point_in_edge(edge, point):
+    def _point_in_edge(self, edge, point):
         return edge.v1[1] <= point.y and edge.v2[1] >= point.y
 
-    def _location_against_edge(point, edge):
+    def _location_against_edge(self, point, edge):
         return Point.direction(edge.v1.point, edge.v2.point, point)
 
     def search_point(self, point):
@@ -54,7 +54,7 @@ class ChainsBinTree(BinTree):
             edge = list(
                 filter(lambda e: self._point_in_edge(e, point), current_node.data)
             )[0]
-            location = self._location_against_edge(edge, point)
+            location = self._location_against_edge(point, edge)
 
             if location > 0:
                 if current_node.right is not None:

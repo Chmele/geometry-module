@@ -70,13 +70,13 @@ class Point:
         return math.acos(v1 * v2 / (v1.euclidean_norm * v2.euclidean_norm))
 
     def polar_angle_with(self, other):
-        '''Polar angle between self and other with self as origin'''
+        '''Polar angle between self and other with other as origin'''
         return math.atan2(self.y - other.y, self.x - other.x)
     
     def ccw_polar_angle_with(self, other):
-        '''Non-negative polar angle between self and other with self as origin'''
+        '''Non-negative polar angle between self and other with other as origin'''
         angle = self.polar_angle_with(other)
-        return angle if angle >= 0 else 2 * math.pi - angle
+        return angle if angle >= 0 else 2 * math.pi + angle
 
 
     def __hash__(self):

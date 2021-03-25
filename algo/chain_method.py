@@ -12,7 +12,8 @@ def chain_method(graph: OrientedGraph, point: Point):
         weight_table = make_weight_table(graph)
         yield weight_table
 
-        balance(weight_table)
+        balance(weight_table, is_down=True)
+        balance(weight_table, is_down=False)
         yield weight_table
 
         chains = create_chains(weight_table)
@@ -23,7 +24,7 @@ def chain_method(graph: OrientedGraph, point: Point):
         tree.make_tree(chains, root)
         yield tree
 
-        return tree.search_dot(point)
+        yield tree.search_point(point)
 
 
 def make_weight_table(graph: OrientedGraph):
@@ -37,10 +38,9 @@ def make_weight_table(graph: OrientedGraph):
     weight_table = OrderedDict()
     for vertex in graph.sorted_vertices(sort_key=lambda v: v.point.y):
         vertex_data = {}
-        vin, vout = [], []
 
-        vin.extend(list(filter(lambda e: e.v2 == vertex, graph.edges)))
-        vout.extend(list(filter(lambda e: e.v1 == vertex, graph.edges)))
+        vin = list(filter(lambda e: e.v2 == vertex, graph.edges))
+        vout = list(filter(lambda e: e.v1 == vertex, graph.edges))
 
         vin = sort_v_edges(vin, is_out=False)
         vout = sort_v_edges(vout, is_out=True)
@@ -52,6 +52,7 @@ def make_weight_table(graph: OrientedGraph):
         weight_v_edges(vertex_data, vout, "wout")
 
         weight_table[vertex] = vertex_data    
+    
     return weight_table
 
 
@@ -61,14 +62,18 @@ def sort_v_edges(edges, is_out):
         return edges
 
     def v_angle(p1, p2):
-        '''Counterclockwise polar angle to sort by starting from pi/2 (noon)'''
+        '''Counterclockwise polar angle to sort by'''
         angle = p1.ccw_polar_angle_with(p2)
-        return angle if angle >= pi / 2 else 2 * pi + angle
+        print(str(p1), str(p2))
+        if is_out:
+            return angle if angle < 3 * pi / 2 else angle - 2 * pi
+        else:
+            return angle if angle >= pi / 2 else 2 * pi + angle
 
     if is_out:
-        sort_key = lambda e: v_angle(e.v1.point, e.v2.point)
-    else:
         sort_key = lambda e: v_angle(e.v2.point, e.v1.point)
+    else:
+        sort_key = lambda e: v_angle(e.v1.point, e.v2.point)
 
     return sorted(edges, key=sort_key, reverse=is_out)
 
@@ -87,26 +92,27 @@ def balance(weight_table: OrderedDict, is_down):
         and reassigning weight values.
     '''
     if is_down:
-        v_type, w_type1, w_type2 = "vin", "win", "wout"
+        v_type1, v_type2, w_type1, w_type2 = "vin", "vout", "win", "wout"
         vertex_data = weight_table.values()
     else:
-        v_type, w_type1, w_type2 = "vout", "wout", "win"
-        vertex_data = reversed(weight_table.values)
+        v_type1, v_type2, w_type1, w_type2 = "vout", "vin", "wout", "win"
+        vertex_data = reversed(weight_table.values())
     
-    update_edge_weights(vertex_data, v_type, w_type1, w_type2)
+    update_edge_weights(vertex_data, v_type1, v_type2, w_type1, w_type2)
 
 
-def update_edge_weights(vertex_data, v_type, w_type1, w_type2):
-    for vd in vertex_data:
+def update_edge_weights(vertex_data, v_type1, v_type2, w_type1, w_type2):
+    rows = list(vertex_data)
+    for vd in rows[1:-1]:
         if vd[w_type1] > vd[w_type2]:
-            edge_to_update = vd[v_type][0]
+            edge_to_update = vd[v_type2][0]
             old_weight = edge_to_update.weight
             edge_to_update.weight = vd[w_type1] - vd[w_type2] + 1
             delta_weight = edge_to_update.weight - old_weight
             vd[w_type2] += delta_weight
             
-            for x in vertex_data:
-                for e in x[v_type]:
+            for x in rows:
+                for e in x[v_type1]:
                     if e == edge_to_update:
                         x[w_type1] += delta_weight
 

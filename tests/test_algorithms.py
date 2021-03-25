@@ -403,90 +403,54 @@ class TestAlgorithms(unittest.TestCase):
         graph.add_edge(v2, v4, 1)
         graph.add_edge(v3, v4, 1)
 
-        graph1 = copy.deepcopy(graph)
-
-        def test_structure(graph: OrientedGraph):
-            weight_table_test = make_weight_table(graph)
-
-            weight_table = {
-                v1: {"vin": [], "vout": [e1, e2], "win": 0, "wout": 2},
-                v2: {"vin": [e1], "vout": [e4, e3], "win": 1, "wout": 2},
-                v3: {"vin": [e3, e2], "vout": [e5], "win": 2, "wout": 1},
-                v4: {"vin": [e4, e5], "vout": [], "win": 2, "wout": 0}
-            }
-
-            weight_table_true = OrderedDict(weight_table)
-
-            self.assertDictEqual(weight_table_test, weight_table_true)
-
-            return weight_table_test
-
-        def test_balancing(weight_table_test: OrderedDict):
-            balance(weight_table_test)
-            e1_TRUE = copy.deepcopy(e1)
-            e1_TRUE.weight = 2
-            e5_TRUE = copy.deepcopy(e5)
-            e5_TRUE.weight = 2
-            weight_table_true = {
-                v1: {"vin": [], "vout": [e1_TRUE, e2], "win": 0, "wout": 3},
-                v2: {"vin": [e1_TRUE], "vout": [e4, e3], "win": 2, "wout": 2},
-                v3: {"vin": [e3, e2], "vout": [e5_TRUE], "win": 2, "wout": 2},
-                v4: {"vin": [e4, e5_TRUE], "vout": [], "win": 3, "wout": 0}
-            }
-
-            weight_table_true = OrderedDict(weight_table_true)
-
-            self.assertDictEqual(weight_table_test, weight_table_true)
-
-        def test_creating_chains(weight_table: OrderedDict):
-            chain_list_test = list()
-            chain_list_test = create_chains(weight_table)
-            
-            e1_TRUE = copy.deepcopy(e1)
-            e1_TRUE.weight = 0
-            e2_TRUE = copy.deepcopy(e2)
-            e2_TRUE.weight = 0
-            e3_TRUE = copy.deepcopy(e3)
-            e3_TRUE.weight = 0
-            e4_TRUE = copy.deepcopy(e4)
-            e4_TRUE.weight = 0
-            e5_TRUE = copy.deepcopy(e5)
-            e5_TRUE.weight = 0
-
-            chain_list_true = [
-                [e1_TRUE, e4_TRUE],
-                [e1_TRUE, e3_TRUE, e5_TRUE],
-                [e2_TRUE, e5_TRUE]
-            ]
-            
-            self.assertListEqual(chain_list_test, chain_list_true)
-            
-            return chain_list_test
-
-        def test_find_dot(graph: OrientedGraph, point: Point):
-            gen = chain_method(graph, point)
-            chain_test = next(next(next(next(next(next(gen))))))
+        ordered = [v1, v2, v3, v4]
         
-            e1_TRUE = copy.deepcopy(e1)
-            e1_TRUE.weight = 0
-            e2_TRUE = copy.deepcopy(e2)
-            e2_TRUE.weight = 0
-            e3_TRUE = copy.deepcopy(e3)
-            e3_TRUE.weight = 0
-            e4_TRUE = copy.deepcopy(e4)
-            e4_TRUE.weight = 0
-            e5_TRUE = copy.deepcopy(e5)
-            e5_TRUE.weight = 0
+        weight_table = OrderedDict({
+            v1: {"vin": [], "vout": [e1, e2], "win": 0, "wout": 2},
+            v2: {"vin": [e1], "vout": [e4, e3], "win": 1, "wout": 2},
+            v3: {"vin": [e3, e2], "vout": [e5], "win": 2, "wout": 1},
+            v4: {"vin": [e4, e5], "vout": [], "win": 2, "wout": 0}
+        })
+        
+        e1_balanced = copy.deepcopy(e1)
+        e1_balanced.weight = 2
+        e5_balanced = copy.deepcopy(e5)
+        e5_balanced.weight = 2
+        weight_table_balanced = {
+            v1: {"vin": [], "vout": [e1_balanced, e2], "win": 0, "wout": 3},
+            v2: {"vin": [e1_balanced], "vout": [e4, e3], "win": 2, "wout": 2},
+            v3: {"vin": [e3, e2], "vout": [e5_balanced], "win": 2, "wout": 2},
+            v4: {"vin": [e4, e5_balanced], "vout": [], "win": 3, "wout": 0}
+        }
+        
+        e1_new = copy.deepcopy(e1)
+        e1_new.weight = 0
+        e2_new = copy.deepcopy(e2)
+        e2_new.weight = 0
+        e3_new = copy.deepcopy(e3)
+        e3_new.weight = 0
+        e4_new = copy.deepcopy(e4)
+        e4_new.weight = 0
+        e5_new = copy.deepcopy(e5)
+        e5_new.weight = 0
 
-            chain_true = (
-                [e1_TRUE, e4_TRUE],
-                [e1_TRUE, e3_TRUE, e5_TRUE]
-            )
+        chains = [
+            [e1_new, e4_new],
+            [e1_new, e3_new, e5_new],
+            [e2_new, e5_new]
+        ]
 
-            self.assertTupleEqual(chain_true, chain_test)
+        root = NodeWithParent(data=chains[1])
+        tree = ChainsBinTree(root)
+        tree.root.left = NodeWithParent(data=chains[0], parent=root)
+        tree.root.right = NodeWithParent(data=chains[2], parent=root)
+        
+        point_between = (chains[0], chains[1])
 
-        weight_table_test = test_structure(graph)
-        test_balancing(weight_table_test)
-        test_creating_chains(weight_table_test)
-        test_find_dot(graph1, point)
-                
+        ans = chain_method(graph, point)
+        self.assertEqual(ordered, next(ans))
+        self.assertEqual(weight_table, next(ans))
+        self.assertEqual(weight_table_balanced, next(ans))
+        self.assertEqual(chains, next(ans))
+        self.assertEqual(tree, next(ans))
+        self.assertEqual(point_between, next(ans))
