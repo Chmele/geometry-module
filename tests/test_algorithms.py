@@ -7,7 +7,7 @@ from algo.jarvis import jarvis
 from algo.graham import graham
 from algo.quickhull import quickhull
 from algo.loci import Loci
-from algo.chain_method import *
+from algo.chain_method import chain_method
 import math
 import copy
 
@@ -63,7 +63,7 @@ class TestAlgorithms(unittest.TestCase):
         )
 
         self.assertTrue(
-            self.fragmentation_eq(
+            TestAlgorithms.fragmentation_eq(
                 ans[1],
                 {
                     (-math.inf, 0.0): [],
@@ -92,7 +92,8 @@ class TestAlgorithms(unittest.TestCase):
         self.assertEqual(ans[2], (5.0, 7.0))
         self.assertEqual(ans[3], [Edge(p4, p6), Edge(p3, p6)])
 
-    def fragmentation_eq(self, f1, f2):
+    @staticmethod
+    def fragmentation_eq(f1, f2):
         for i in f1:
             for item in f1[i]:
                 if item not in f2[i]:
@@ -385,7 +386,7 @@ class TestAlgorithms(unittest.TestCase):
         v2 = Vertex(Point(2, 4))
         v3 = Vertex(Point(6, 5))
         v4 = Vertex(Point(5, 7))
-        
+
         e1 = OrientedEdge(v1, v2, 1)
         e2 = OrientedEdge(v1, v3, 1)
         e3 = OrientedEdge(v2, v3, 1)

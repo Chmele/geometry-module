@@ -97,7 +97,7 @@ def balance(weight_table: OrderedDict, is_down):
     else:
         v_type1, v_type2, w_type1, w_type2 = "vout", "vin", "wout", "win"
         vertex_data = reversed(weight_table.values())
-    
+
     update_edge_weights(vertex_data, v_type1, v_type2, w_type1, w_type2)
 
 

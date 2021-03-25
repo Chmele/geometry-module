@@ -54,6 +54,6 @@ class Vector:
 
     def normalize(self):
         self.coords = tuple(x / self.euclidean_norm for x in self.coords)
-    
+
     def cross_product_with(self, other):
         return self.x * other.y - other.x * self.y

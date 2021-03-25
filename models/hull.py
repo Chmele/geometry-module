@@ -36,7 +36,7 @@ class Hull(Polygon):
             )
 
         arc1, arc2 = arc(u, v), arc(v, u)
-        
+
         def key(arc):
             return Polygon(list(arc)+[point]).area
         

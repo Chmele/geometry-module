@@ -1,8 +1,6 @@
-from models.triangle import Triangle
-from models.polygon import Polygon
 import unittest
-from models import Point, Vertex, Graph, Vector, Triangle, Polygon, Hull
 import math
+from models import Point, Vertex, Graph, Vector, Triangle, Polygon, Hull
 
 
 class TestModels(unittest.TestCase):
@@ -51,7 +49,7 @@ class TestModels(unittest.TestCase):
         pn = Point(1.1, 1)
         self.assertEqual(p.contains_point(p0), True)
         self.assertNotEqual(p.contains_point(pn), True)
-    
+
     def test_point_centroid(self):
         p1 = Point(1, 2, 3)
         p2 = Point(1, 5, 6)
