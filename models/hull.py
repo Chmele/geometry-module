@@ -39,5 +39,5 @@ class Hull(Polygon):
 
         def key(arc):
             return Polygon(list(arc)+[point]).area
-        
+
         return max((arc1, arc2), key=key)

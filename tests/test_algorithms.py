@@ -1,5 +1,5 @@
 import unittest
-from models import Point, Vertex, Graph, Edge, BinTree, KdTree, Node, OrientedGraph, OrientedEdge, NodeWithParent
+from models import Point, Vertex, Graph, Edge, BinTree, ChainsBinTree, KdTree, Node, OrientedGraph, OrientedEdge, NodeWithParent
 from collections import OrderedDict
 from algo.stripe_method import stripe
 from algo.kd_tree_method import kd_tree
@@ -405,14 +405,14 @@ class TestAlgorithms(unittest.TestCase):
         graph.add_edge(v3, v4, 1)
 
         ordered = [v1, v2, v3, v4]
-        
+
         weight_table = OrderedDict({
             v1: {"vin": [], "vout": [e1, e2], "win": 0, "wout": 2},
             v2: {"vin": [e1], "vout": [e4, e3], "win": 1, "wout": 2},
             v3: {"vin": [e3, e2], "vout": [e5], "win": 2, "wout": 1},
             v4: {"vin": [e4, e5], "vout": [], "win": 2, "wout": 0}
         })
-        
+
         e1_balanced = copy.deepcopy(e1)
         e1_balanced.weight = 2
         e5_balanced = copy.deepcopy(e5)
@@ -423,7 +423,7 @@ class TestAlgorithms(unittest.TestCase):
             v3: {"vin": [e3, e2], "vout": [e5_balanced], "win": 2, "wout": 2},
             v4: {"vin": [e4, e5_balanced], "vout": [], "win": 3, "wout": 0}
         }
-        
+
         e1_new = copy.deepcopy(e1)
         e1_new.weight = 0
         e2_new = copy.deepcopy(e2)

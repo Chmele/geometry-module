@@ -110,7 +110,7 @@ def update_edge_weights(vertex_data, v_type1, v_type2, w_type1, w_type2):
             edge_to_update.weight = vd[w_type1] - vd[w_type2] + 1
             delta_weight = edge_to_update.weight - old_weight
             vd[w_type2] += delta_weight
-            
+
             for x in rows:
                 for e in x[v_type1]:
                     if e == edge_to_update:
