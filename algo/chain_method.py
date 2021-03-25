@@ -129,11 +129,11 @@ def create_chains(weight_table: OrderedDict):
 
         while current != last:
             edge = weight_table[current]["vout"][0]
-            
+
             if edge.weight == 0:
                 weight_table[current]["vout"].pop(0)
                 edge = weight_table[current]["vout"][0]
-            
+
             chain.append(edge)
             edge.weight -= 1
             weight_table[current]["wout"] -= 1

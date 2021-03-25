@@ -445,7 +445,7 @@ class TestAlgorithms(unittest.TestCase):
         tree = ChainsBinTree(root)
         tree.root.left = NodeWithParent(data=chains[0], parent=root)
         tree.root.right = NodeWithParent(data=chains[2], parent=root)
-        
+
         point_between = (chains[0], chains[1])
 
         ans = chain_method(graph, point)
