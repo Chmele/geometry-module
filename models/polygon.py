@@ -5,9 +5,11 @@ import math
 
 class Polygon:
     def __init__(self, points):
+        """Make polygon by point list."""
         self.points = points
 
     def __getitem__(self, key):
+        """Wraps tuple-like behavior."""
         return self.points[key]
 
     @property

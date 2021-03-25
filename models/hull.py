@@ -5,7 +5,8 @@ from itertools import cycle, dropwhile, takewhile, chain
 
 class Hull(Polygon):
     def __add__(self, other):
-        p1, p2, p3, *rest = self.points
+        """Merge two hulls in one."""
+        p1, p2, p3 = self.points[:3]
         centroid = Point.centroid((p1, p2, p3))
         if other.contains_point(centroid):
             points = list(self) + list(other)
@@ -22,8 +23,21 @@ class Hull(Polygon):
     def get_arc(self, point):
         point_cycle = cycle(self)
         u, v = self.reference_points(point)
-        arc1 = list(chain(takewhile(lambda x: x != v, dropwhile(lambda x: x != u, point_cycle)), (v,)))
-        arc2 = list(chain(takewhile(lambda x: x != u, dropwhile(lambda x: x != v, point_cycle)), (u,)))
+        
+        def arc(start, end):
+            """Return arc of point_cycle with start and end exclusively."""
+            return list(
+                chain(
+                    takewhile(
+                        lambda x: x != end, dropwhile(lambda x: x != start, point_cycle)
+                    ),
+                    (end,),
+                )
+            )
+
+        arc1, arc2 = arc(u, v), arc(v, u)
+        
         def key(arc):
             return Polygon(list(arc)+[point]).area
+        
         return max((arc1, arc2), key=key)

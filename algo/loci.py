@@ -5,6 +5,7 @@ class Loci:
     """Is a wrap of a dict {Point: int}, int is amount of points smaller than key point"""
 
     def __init__(self):
+        """By default constructor creates null instance."""
         self.repr = {}
 
     def append_points(self, *li):

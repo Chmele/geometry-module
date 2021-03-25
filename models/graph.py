@@ -5,6 +5,7 @@ class Graph:
         self.vertices, self.edges = set(), set()
 
     def __str__(self):
+        """Return str for edges of graph."""
         return str(self.edges)
 
     def sorted_vertices(self, sort_key):
