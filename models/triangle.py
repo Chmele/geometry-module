@@ -1,4 +1,5 @@
 import math
+from operator import itemgetter
 from models import Point
 
 
@@ -7,30 +8,31 @@ class Triangle:
         self.points = (p1, p2, p3)
 
     @property
-    def p1(self):
+    def a(self):
         return self.points[0]
 
     @property
-    def p2(self):
+    def b(self):
         return self.points[1]
 
     @property
-    def p3(self):
+    def c(self):
         return self.points[2]
 
     @property
     def sides(self):
+        ig = itemgetter(2, 3, 1)
         return (
             p1.dist_to_point(p2)
-            for p1, p2 in zip((self.C, self.A, self.B), (self.B, self.C, self.A))
+            for p1, p2 in zip(self.points, ig(self.points))
         )
 
     @property
     def area(self):
         """Heron`s formula."""
         p = sum(self.sides) / 2
-        A, B, C = self.sides
-        return math.sqrt(p * (p - A) * (p - B) * (p - C))
+        ab, bc, ca = self.sides
+        return math.sqrt(p * (p - ab) * (p - bc) * (p - ca))
 
     def point_belonging(self, p: Point):
         """
@@ -38,9 +40,9 @@ class Triangle:
         :param p: point to check
         :return: True if belongs, False otherwise
         """
-        a = (self.p1.x - p.x) * (self.p2.y - self.p1.y) - (self.p2.x - self.p1.x) * (self.p1.y - p.y)
-        b = (self.p2.x - p.x) * (self.p3.y - self.p2.y) - (self.p3.x - self.p2.x) * (self.p2.y - p.y)
-        c = (self.p3.x - p.x) * (self.p1.y - self.p3.y) - (self.p1.x - self.p3.x) * (self.p3.y - p.y)
+        a = (self.a.x - p.x) * (self.b.y - self.a.y) - (self.b.x - self.a.x) * (self.a.y - p.y)
+        b = (self.b.x - p.x) * (self.c.y - self.b.y) - (self.c.x - self.b.x) * (self.b.y - p.y)
+        c = (self.c.x - p.x) * (self.a.y - self.c.y) - (self.a.x - self.c.x) * (self.c.y - p.y)
         return ((a >= 0) and (b >= 0) and (c >= 0)) or ((a <= 0) and (b <= 0) and (c <= 0))
 
     def __eq__(self, other):

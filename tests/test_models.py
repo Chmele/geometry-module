@@ -1,9 +1,10 @@
 import unittest
-from models import Point, Vertex, Graph
+from models import Point, Vertex, Graph, Triangle
 
 
 class TestModels(unittest.TestCase):
     '''Test class for basic entities'''
+
     def test_point_creation(self):
         p1 = Point(1, 2)
         p2 = Point(1, 2, 3.6)
@@ -24,9 +25,9 @@ class TestModels(unittest.TestCase):
         self.assertEqual(len(g.edges), 1)
 
     def test_point_domination(self):
-        a = Point(1,2)
-        b = Point(3,4)
-        c = Point(2,2)
+        a = Point(1, 2)
+        b = Point(3, 4)
+        c = Point(2, 2)
         self.assertTrue(b.dominating(a))
         self.assertTrue(b.dominating(c))
         self.assertFalse(a.dominating(c))
@@ -131,7 +132,6 @@ class TestModels(unittest.TestCase):
                 Point(-2.0, 0.0),
             ],
         )
-
 
     def test_point_belonging_to_triangle(self):
         # one side of the triangle is parallel to one of the coordinate axes
