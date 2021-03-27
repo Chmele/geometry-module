@@ -11,7 +11,7 @@ This module contains implementations for computational geometry algorithms based
     * *Trapezoid method **(TBD)***:  locate a point in a trapezoidal partition of a planar graph in one of its trapezoids.
 * Range-searching
     * *k-D tree method*: find out which or how many points of a given set lie in a specified range, using a multidimensional binary tree (here, 2-*D* tree).
-    * *Range-tree method **(TBD)**: find out which or how many points of a given set lie in a specified range, using a range tree data structure.
+    * *Range-tree method **(TBD)***: find out which or how many points of a given set lie in a specified range, using a range tree data structure.
     * *Loci method*: find out how many points of a given set lie in a specified range, using a region (locus) partition of the searching space.
 #### Constructing convex hulls
 * Static problem
