@@ -28,9 +28,7 @@ class Loci:
         return 0
 
     def get_dominating_points(self, point, dimension):
-        dim_coords = (
-            i[dimension] for i in self.repr if point[dimension] < i[dimension]
-        )
+        dim_coords = (i[dimension] for i in self.repr if point[dimension] < i[dimension])
         p_coords = list(point.coords)
 
         def new_dot(value):

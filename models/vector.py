@@ -44,7 +44,8 @@ class Vector:
             return v1[0] * v2[1] - v1[1] * v2[0]
 
         return math.asin(
-            abs_vect_mul_2d(self, other) / (self.euclidean_norm * other.euclidean_norm)
+            abs_vect_mul_2d(self, other)
+            / (self.euclidean_norm * other.euclidean_norm)
         )
 
     @staticmethod

@@ -1,6 +1,6 @@
 import unittest
-from models import Point, Vertex, Graph, Vector, Triangle, Polygon, Hull
 import math
+from models import Point, Vertex, Graph, Vector, Triangle, Polygon, Hull
 
 
 class TestModels(unittest.TestCase):
@@ -82,6 +82,7 @@ class TestModels(unittest.TestCase):
         p4 = Point(100, 0)
         p = Polygon((p1, p2, p3, p4))
         self.assertAlmostEqual(p.area, 10000)
+        self.assertAlmostEqual(p.area, 10000)
 
     def test_hull_sum(self):
         p1 = Point(2, 2)
@@ -122,14 +123,4 @@ class TestModels(unittest.TestCase):
         r2 = Polygon((p1, p2, p3, p4))
 
         h = Hull(r1) + Hull(r2)
-        self.assertEqual(
-            h,
-            [
-                Point(-2.0, -2.0),
-                Point(0.0, -2.0),
-                Point(2.0, 0.0),
-                Point(2.0, 2.0),
-                Point(0.0, 2.0),
-                Point(-2.0, 0.0),
-            ],
-        )
+        self.assertEqual(h, [Point(-2.0, -2.0), Point(0.0, -2.0), Point(2.0, 0.0), Point(2.0, 2.0), Point(0.0, 2.0), Point(-2.0, 0.0)])
