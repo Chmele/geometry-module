@@ -2,7 +2,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/9630c9cb0ce44acdb3d2f4c15e27cde7)](https://www.codacy.com/gh/Chmele/geometry-module/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Chmele/geometry-module&amp;utm_campaign=Badge_Grade)
 
 ## Contents
-This module contains implementations for computational geometry algorithms based upon Franco P. Preparata and Michael I. Shamos' book "Computational Geometry: An Introduction". These algorithms are subdivided in three topics: geometric searching, constructing convex hulls, and proximity problems.
+This module contains implementations for computational geometry algorithms based upon Franco P. Preparata and Michael I. Shamos' book "Computational Geometry: An Introduction". These algorithms are subdivided into three topics: geometric searching, constructing convex hulls, and proximity problems.
 #### Geometric searching
 * Point location
   * *Slab method*: locate a point in a planar graph between its two edges.
