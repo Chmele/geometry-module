@@ -1,12 +1,12 @@
-from models import Node
+from models import Node, BinTree
 
 
-class RegionTree:
+class RegionTree(BinTree):
     def __init__(self, points):
         self.x_ordered = sorted(points, key=lambda u: u.x)
         self.y_key = lambda u: u.y
         interval = [0, len(self.x_ordered) - 1]
-        self.root = Node([interval, sorted(self.x_ordered, key=self.y_key)])
+        super().__init__(Node([interval, sorted(self.x_ordered, key=self.y_key)]))
         self.__build(self.root)
 
     def __build(self, node: Node):
