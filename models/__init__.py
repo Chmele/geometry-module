@@ -9,6 +9,7 @@ from models.line2d import Line2D
 from models.triangle import Triangle
 from models.polygon import Polygon
 from models.hull import Hull
+from models.region_tree import RegionTree
 
 __all__ = [
     "Vector",
@@ -23,4 +24,5 @@ __all__ = [
     "Triangle",
     "Polygon",
     "Hull",
+    "RegionTree"
 ]
