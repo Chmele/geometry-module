@@ -9,7 +9,24 @@ def init_points(points: List[Point]):
 
 def closest_pair_split(points_sorted_x: List[Point], points_sorted_y: List[Point], delta: float):
     '''Finding closest pair of points splited by the line'''
-    pass
+    length_x = len(points_sorted_x)
+    middle = length_x // 2
+    points_sorted_x = list(filter(lambda point: point.dist_to_point(points_sorted_x[middle]) <= delta, points_sorted_x))
+    left_points_x = points_sorted_x[:middle]
+    right_points_x = points_sorted_x[middle:]
+    
+    left_points_x.sort(key=lambda point: point.y)
+    right_points_x.sort(key=lambda point: point.y)
+    
+    min_dist_pairs: List[Tuple] = []
+
+
+    for point_left in left_points_x:
+        in_range = list(filter(lambda point_right: abs(point_right.y - point_left.y) < delta, right_points_x))
+        min_dist_pair = (point_left, min(in_range, key=lambda point: point_left.dist_to_point(point)))
+        min_dist_pairs.append(min_dist_pair)
+    
+    yield min(min_dist_pairs, key=lambda pair: pair[0].dist_to_point(pair[1]))
 
 def closest_pair(points_sorted_x: List[Point], points_sorted_y: List[Point]):
     '''Finding closest pair of points'''
