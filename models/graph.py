@@ -1,6 +1,8 @@
 from models import Vertex, Edge, OrientedEdge
 
 class Graph:
+    edge_class = Edge
+
     def __init__(self):
         self.vertices, self.edges = set(), set()
 
@@ -15,17 +17,19 @@ class Graph:
         self.vertices.add(v)
 
     def add_edge(self, v1: Vertex, v2: Vertex, weight=0):
-        e1 = Edge(v1, v2, weight)
-        e2 = Edge(v2, v1)
+        e1 = self.edge_class(v1, v2, weight)
+        e2 = self.edge_class(v2, v1)
         if (v1 in self.vertices and v2 in self.vertices
             and e1 not in self.edges and e2 not in self.edges):
             self.edges.add(e1)
 
 
 class OrientedGraph(Graph):
+    edge_class = OrientedEdge
+
     def add_edge(self, v1: Vertex, v2: Vertex, weight=0):
         if (v1 in self.vertices and v2 in self.vertices):
-            self.edges.add(OrientedEdge(v1, v2, weight))
+            self.edges.add(self.edge_class(v1, v2, weight))
 
     def is_regular(self):
         '''
