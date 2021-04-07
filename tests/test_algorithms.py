@@ -8,6 +8,7 @@ from algo.graham import graham
 from algo.quickhull import quickhull
 from algo.loci import Loci
 from algo.chain_method import chain_method
+from algo.dc_closest_points import closest_points
 import math
 import copy
 
@@ -455,3 +456,19 @@ class TestAlgorithms(unittest.TestCase):
         self.assertEqual(chains, next(ans))
         self.assertEqual(tree, next(ans))
         self.assertEqual(point_between, next(ans))
+
+    def test_closest_points(self):
+        points_test = [
+            Point(3, 3),
+            Point(6, 2),
+            Point(5, 6),
+            Point(7, 4),
+            Point(2, 9)
+        ]
+        
+        close_pair_true = (
+            Point(6, 2),
+            Point(7, 4)
+        )
+
+        self.assertTupleEqual(closest_points(points_test), close_pair_true)
