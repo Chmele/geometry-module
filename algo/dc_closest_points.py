@@ -4,15 +4,15 @@ from sys import maxsize
 
 
 def closest_points(points: List[Point]):
-    Ux, Uy, U = init_points(points)
+    Ux, Uy = init_points(points)
     return closest_pair(Ux, Uy)
 
 
 def init_points(points: List[Point]):
     Ux = sorted(points, key=lambda point: point.x)
     Uy = sorted(points, key=lambda point: point.y)
-    U = {point: {"x": Ux.index(point), "j": Uy.index(point)} for point in points}
-    return Ux, Uy, U
+    #U = {point: {"x": Ux.index(point), "j": Uy.index(point)} for point in points}
+    return Ux, Uy
 
 
 def closest_pair_split(
@@ -62,9 +62,7 @@ def closest_pair_split(
 def closest_pair(points_sorted_x: List[Point], points_sorted_y: List[Point]):
     """Finding closest pair of points"""
     length_x = len(points_sorted_x)
-    dist_left = maxsize
-    dist_right = maxsize
-    dist_split = maxsize
+    dist_left, dist_right, dist_split = maxsize
 
     if length_x < 2:
         return None
