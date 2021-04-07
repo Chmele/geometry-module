@@ -36,7 +36,7 @@ def closest_pair_split(points_sorted_x: List[Point], points_sorted_y: List[Point
     if min_dist_pairs:
         return min(min_dist_pairs, key=lambda pair: pair[0].dist_to_point(pair[1]))
     else:
-        None
+        return None
 
 def closest_pair(points_sorted_x: List[Point], points_sorted_y: List[Point]):
     '''Finding closest pair of points'''
