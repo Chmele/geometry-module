@@ -75,19 +75,15 @@ def closest_pair(points_sorted_x: List[Point], points_sorted_y: List[Point]):
         middle = length_x // 2
         middle_point = points_sorted_x[middle]
 
-        left_sorted_y = list(
-            filter(lambda point: point.x < middle_point.x, points_sorted_y)
+        left_sorted_y = sorted(
+            list(filter(lambda point: point.x < middle_point.x, points_sorted_y)),
+            key=lambda p: p.y,
         )
-        left_sorted_y.sort(
-            key=lambda point: point.y
-        )  # may be useless cause points_sorted_y is already sorted
 
-        right_sorted_y = list(
-            filter(lambda point: point.x >= middle_point.x, points_sorted_y)
+        right_sorted_y = sorted(
+            list(filter(lambda point: point.x >= middle_point.x, points_sorted_y)),
+            key=lambda p: p.y
         )
-        right_sorted_y.sort(
-            key=lambda point: point.y
-        )  # may be useless cause points_sorted_y is already sorted
 
         closest_points_left: Tuple[Point] = closest_pair(
             points_sorted_x[:middle], left_sorted_y
