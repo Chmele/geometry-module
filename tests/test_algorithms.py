@@ -1,5 +1,17 @@
 import unittest
-from models import Point, Vertex, Graph, Edge, BinTree, ChainsBinTree, KdTree, Node, OrientedGraph, OrientedEdge, NodeWithParent
+from models import (
+    Point,
+    Vertex,
+    Graph,
+    Edge,
+    BinTree,
+    ChainsBinTree,
+    KdTree,
+    Node,
+    OrientedGraph,
+    OrientedEdge,
+    NodeWithParent,
+)
 from collections import OrderedDict
 from algo.stripe_method import stripe
 from algo.kd_tree_method import kd_tree
@@ -407,12 +419,14 @@ class TestAlgorithms(unittest.TestCase):
 
         ordered = [v1, v2, v3, v4]
 
-        weight_table = OrderedDict({
-            v1: {"vin": [], "vout": [e1, e2], "win": 0, "wout": 2},
-            v2: {"vin": [e1], "vout": [e4, e3], "win": 1, "wout": 2},
-            v3: {"vin": [e3, e2], "vout": [e5], "win": 2, "wout": 1},
-            v4: {"vin": [e4, e5], "vout": [], "win": 2, "wout": 0}
-        })
+        weight_table = OrderedDict(
+            {
+                v1: {"vin": [], "vout": [e1, e2], "win": 0, "wout": 2},
+                v2: {"vin": [e1], "vout": [e4, e3], "win": 1, "wout": 2},
+                v3: {"vin": [e3, e2], "vout": [e5], "win": 2, "wout": 1},
+                v4: {"vin": [e4, e5], "vout": [], "win": 2, "wout": 0},
+            }
+        )
 
         e1_balanced = copy.deepcopy(e1)
         e1_balanced.weight = 2
@@ -422,7 +436,7 @@ class TestAlgorithms(unittest.TestCase):
             v1: {"vin": [], "vout": [e1_balanced, e2], "win": 0, "wout": 3},
             v2: {"vin": [e1_balanced], "vout": [e4, e3], "win": 2, "wout": 2},
             v3: {"vin": [e3, e2], "vout": [e5_balanced], "win": 2, "wout": 2},
-            v4: {"vin": [e4, e5_balanced], "vout": [], "win": 3, "wout": 0}
+            v4: {"vin": [e4, e5_balanced], "vout": [], "win": 3, "wout": 0},
         }
 
         e1_new = copy.deepcopy(e1)
@@ -436,11 +450,7 @@ class TestAlgorithms(unittest.TestCase):
         e5_new = copy.deepcopy(e5)
         e5_new.weight = 0
 
-        chains = [
-            [e1_new, e4_new],
-            [e1_new, e3_new, e5_new],
-            [e2_new, e5_new]
-        ]
+        chains = [[e1_new, e4_new], [e1_new, e3_new, e5_new], [e2_new, e5_new]]
 
         root = NodeWithParent(data=chains[1])
         tree = ChainsBinTree(root)
@@ -458,17 +468,8 @@ class TestAlgorithms(unittest.TestCase):
         self.assertEqual(point_between, next(ans))
 
     def test_closest_points(self):
-        points_test = [
-            Point(3, 3),
-            Point(6, 2),
-            Point(5, 6),
-            Point(7, 4),
-            Point(2, 9)
-        ]
-        
-        close_pair_true = (
-            Point(6, 2),
-            Point(7, 4)
-        )
+        points_test = [Point(3, 3), Point(6, 2), Point(5, 6), Point(7, 4), Point(2, 9)]
+
+        close_pair_true = (Point(6, 2), Point(7, 4))
 
         self.assertTupleEqual(closest_points(points_test), close_pair_true)
