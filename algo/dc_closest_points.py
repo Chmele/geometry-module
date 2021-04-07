@@ -62,7 +62,7 @@ def closest_pair_split(
 def closest_pair(points_sorted_x: List[Point], points_sorted_y: List[Point]):
     """Finding closest pair of points"""
     length_x = len(points_sorted_x)
-    dist_left, dist_right, dist_split = maxsize
+    dist_left, dist_right, dist_split = 3*[maxsize]
 
     if length_x < 2:
         return None
