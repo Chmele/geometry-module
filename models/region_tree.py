@@ -1,37 +1,43 @@
 from models import Node, BinTree
+from itertools import groupby, chain
 
 
 class RegionTree(BinTree):
     def __init__(self, points):
+        self.__y_sort_flat = lambda l: sorted(chain.from_iterable(l), key=lambda u: u.y)
         self.x_ordered = sorted(points, key=lambda u: u.x)
-        self.y_key = lambda u: u.y
-        interval = [0, len(self.x_ordered) - 1]
-        super().__init__(Node([interval, sorted(self.x_ordered, key=self.y_key)]))
+        self.y_ordered = sorted(points, key=lambda u: u.y)
+        self.projections = [list(g) for _, g in groupby(self.x_ordered, key=lambda u: u.x)]
+        interval = [1, len(self.projections)]
+        super().__init__(Node([interval, self.__y_sort_flat(self.projections)]))
         self.__build(self.root)
 
     def __build(self, node: Node):
-        begin, end = node.data[0]
-        mid = (end + begin) // 2
-        if (end - begin) == 1:
+        start, end = node.data[0]
+        mid = (end + start) // 2
+        if (end - start) == 1:
             return
-        l_int, r_int = [begin, mid], [mid, end]
-        l_list = sorted(self.x_ordered[begin:mid + 1], key=self.y_key)
-        r_list = sorted(self.x_ordered[mid:end + 1], key=self.y_key)
-        node.left = Node([l_int, l_list])
-        node.right = Node([r_int, r_list])
+        l_int, r_int = [start, mid], [mid, end]
+        l_list = self.__y_sort_flat(self.projections[start - 1:mid])
+        r_list = self.__y_sort_flat(self.projections[mid - 1:end])
+        node.left, node.right = Node([l_int, l_list]), Node([r_int, r_list])
         self.__build(node.left)
         self.__build(node.right)
 
     def region_search(self, x_range, y_range):
-        enum = enumerate(self.x_ordered)
+        x_norm = self.region_normalization(self.projections, x_range)
+        if not x_norm:
+            return []
+        nodes = RegionTree.primary_search(self.root, x_norm)
+        res = set(chain.from_iterable(self.secondary_search(node.data[1], y_range) for node in nodes))
+        return res
+
+    @staticmethod
+    def region_normalization(projections, x_range):
+        enum = enumerate([ls[0] for ls in projections])
         l_bound = next((x for x, val in enum if val.x >= x_range[0]), None)
         r_bound = next((x for x, val in reversed(list(enum)) if val.x <= x_range[1]), None)
-        if l_bound is None or r_bound is None:
-            return []
-        nodes = RegionTree.primary_search(self.root, [l_bound, r_bound])
-        sec_structs = [RegionTree.build_sec_struct(node.data[1]) for node in nodes]
-        points = set(RegionTree.secondary_search(tree, y_range) for tree in sec_structs)
-        return nodes, sec_structs, points
+        return [l_bound + 1, r_bound + 1] if l_bound is not None and r_bound is not None else []
 
     @staticmethod
     def primary_search(node: Node, interval):
@@ -49,15 +55,8 @@ class RegionTree(BinTree):
         return nodes
 
     @staticmethod
-    def build_sec_struct(points):
-        if not points:
-            return
-        mid = (len(points) - 1) // 2
-        node = Node(points[mid])
-        node.left = RegionTree.build_sec_struct(points[:mid])
-        node.right = RegionTree.build_sec_struct(points[mid + 1:])
-        return node
-
-    @staticmethod
-    def secondary_search(node: Node, interval):
-        pass
+    def secondary_search(ls, interval):
+        enum = enumerate(ls)
+        l_bound = next((x for x, val in enum if val.y >= interval[0]), None)
+        r_bound = next((x for x, val in reversed(list(enum)) if val.y <= interval[1]), None)
+        return ls[l_bound:r_bound + 1] if l_bound is not None and r_bound is not None else []
