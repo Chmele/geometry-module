@@ -3,10 +3,15 @@ from models import Point
 
 
 def graham(points):
-    origin = Point.centroid(points)
-    min_point = min(points, key=lambda p: tuple(reversed(p.coords)))
+    i = 2
+    while Point.direction(points[0], points[1], points[i]) == 0:
+        i += 1
+    origin = Point.centroid([points[0], points[1], points[i]])
+
+    yield origin
+    min_point = max(points, key=lambda p: (-p.y, p.x))
     ordered = sort_points(points, origin, min_point)
-    yield ordered
+    yield [min_point] + ordered[1:]
 
     ordered.append(min_point)
     steps_table = []
